@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BizHub — Local Business Ecosystem</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* ── RESET & TOKENS ─────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0f14;
+  --bg2:#13161e;
+  --bg3:#1a1e28;
+  --surface:#1e2330;
+  --surface2:#252b3a;
+  --border:#2a3045;
+  --border2:#323a52;
+  --text:#e8ecf4;
+  --text2:#8b93a8;
+  --text3:#5a6278;
+  --accent:#f0a500;
+  --accent2:#ff6b35;
+  --green:#22c97a;
+  --red:#f0484a;
+  --blue:#4a9eff;
+  --purple:#a78bfa;
+  --teal:#2dd4bf;
+  --r:12px;
+  --r2:8px;
+  --r3:20px;
+  --shadow:0 4px 24px rgba(0,0,0,.4);
+  --shadow2:0 2px 8px rgba(0,0,0,.3);
+  --font-head:'Syne',sans-serif;
+  --font-body:'DM Sans',sans-serif;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:14px;line-height:1.6;overflow-x:hidden}
+button{cursor:pointer;font-family:var(--font-body);border:none;outline:none}
+input,select,textarea{font-family:var(--font-body);outline:none}
+a{text-decoration:none;color:inherit}
+
+/* ── SCROLLBAR ──────────────────────────────────────── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+
+/* ── LAYOUT ─────────────────────────────────────────── */
+#app{display:flex;height:100vh;overflow:hidden}
+
+/* ── SIDEBAR ─────────────────────────────────────────── */
+#sidebar{
+  width:240px;min-width:240px;
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  padding:0;
+  position:relative;
+  z-index:10;
+  transition:width .3s ease;
+}
+.sidebar-logo{
+  padding:24px 20px 20px;
+  border-bottom:1px solid var(--border);
+}
+.logo-mark{
+  display:flex;align-items:center;gap:10px;
+}
+.logo-icon{
+  width:36px;height:36px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:800;font-family:var(--font-head);
+  color:#000;
+  flex-shrink:0;
+}
+.logo-text{font-family:var(--font-head);font-size:18px;font-weight:700;letter-spacing:-.3px}
+.logo-sub{font-size:10px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+
+/* Business switcher */
+.biz-switcher{
+  margin:16px 12px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r2);
+  padding:10px 12px;
+  cursor:pointer;
+  transition:border-color .2s;
+}
+.biz-switcher:hover{border-color:var(--border2)}
+.biz-name{font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:space-between}
+.biz-type{font-size:11px;color:var(--text3);margin-top:2px}
+.biz-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+
+.sidebar-nav{flex:1;padding:8px 12px;overflow-y:auto}
+.nav-section{font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;padding:12px 8px 6px;font-weight:500}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 10px;
+  border-radius:var(--r2);
+  color:var(--text2);
+  font-size:13px;font-weight:400;
+  cursor:pointer;
+  transition:all .15s;
+  margin-bottom:2px;
+  position:relative;
+}
+.nav-item:hover{background:var(--surface);color:var(--text)}
+.nav-item.active{background:linear-gradient(90deg,rgba(240,165,0,.15),rgba(240,165,0,.05));color:var(--accent);font-weight:500}
+.nav-item.active::before{content:'';position:absolute;left:0;top:20%;height:60%;width:3px;background:var(--accent);border-radius:0 3px 3px 0}
+.nav-icon{font-size:16px;width:20px;text-align:center}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;padding:1px 6px;border-radius:10px;font-weight:600}
+
+.sidebar-footer{
+  padding:12px;
+  border-top:1px solid var(--border);
+}
+.user-card{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 10px;
+  border-radius:var(--r2);
+  cursor:pointer;
+  transition:background .15s;
+}
+.user-card:hover{background:var(--surface)}
+.user-avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,var(--purple),var(--blue));
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.user-name{font-size:12px;font-weight:500}
+.user-role{font-size:10px;color:var(--text3)}
+
+/* ── MAIN CONTENT ───────────────────────────────────── */
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── TOP BAR ────────────────────────────────────────── */
+#topbar{
+  height:56px;min-height:56px;
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;
+  padding:0 24px;
+  gap:16px;
+}
+.page-title{font-family:var(--font-head);font-size:17px;font-weight:700;flex:1}
+.topbar-actions{display:flex;align-items:center;gap:8px}
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 14px;border-radius:var(--r2);
+  font-size:13px;font-weight:500;
+  transition:all .15s;
+}
+.btn-primary{background:var(--accent);color:#000}
+.btn-primary:hover{background:#ffb520;transform:translateY(-1px)}
+.btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text2)}
+.btn-ghost:hover{background:var(--surface);color:var(--text)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.topbar-search{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r2);padding:7px 12px;
+  flex:1;max-width:280px;
+}
+.topbar-search input{background:none;border:none;color:var(--text);font-size:13px;flex:1;width:100%}
+.topbar-search input::placeholder{color:var(--text3)}
+.topbar-icon-btn{
+  width:34px;height:34px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;cursor:pointer;transition:all .15s;color:var(--text2);
+}
+.topbar-icon-btn:hover{border-color:var(--accent);color:var(--accent)}
+.notif-dot{position:relative}
+.notif-dot::after{content:'';position:absolute;top:4px;right:4px;width:6px;height:6px;background:var(--red);border-radius:50%;border:2px solid var(--bg2)}
+
+/* ── PAGE CONTAINER ─────────────────────────────────── */
+#page-container{flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:24px}
+
+/* ── PAGES ──────────────────────────────────────────── */
+.page{display:none;flex-direction:column;gap:20px;animation:fadein .25s ease}
+.page.active{display:flex}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── STAT CARDS ─────────────────────────────────────── */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.stat-card{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  padding:18px 20px;
+  position:relative;overflow:hidden;
+  transition:border-color .2s,transform .2s;
+}
+.stat-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.stat-card::before{
+  content:'';position:absolute;top:0;right:0;
+  width:80px;height:80px;border-radius:50%;
+  opacity:.06;transform:translate(20px,-20px);
+}
+.stat-card.green::before{background:var(--green)}
+.stat-card.red::before{background:var(--red)}
+.stat-card.blue::before{background:var(--blue)}
+.stat-card.amber::before{background:var(--accent)}
+.stat-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;font-weight:500}
+.stat-value{font-family:var(--font-head);font-size:26px;font-weight:700;line-height:1;margin-bottom:6px}
+.stat-delta{font-size:12px;display:flex;align-items:center;gap:4px}
+.stat-delta.up{color:var(--green)}
+.stat-delta.down{color:var(--red)}
+.stat-icon{position:absolute;top:18px;right:18px;font-size:22px;opacity:.4}
+
+/* ── SECTION HEADERS ────────────────────────────────── */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.section-title{font-family:var(--font-head);font-size:15px;font-weight:700}
+.section-sub{font-size:12px;color:var(--text3);margin-top:2px}
+
+/* ── CARD ───────────────────────────────────────────── */
+.card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--r);padding:20px;
+}
+.card-sm{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r2);padding:14px 16px;
+}
+
+/* ── CHART CONTAINERS ───────────────────────────────── */
+.chart-grid{display:grid;grid-template-columns:2fr 1fr;gap:14px}
+.chart-wrap{position:relative;height:240px}
+
+/* ── TABLE ──────────────────────────────────────────── */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{
+  text-align:left;padding:10px 14px;
+  font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;
+  border-bottom:1px solid var(--border);font-weight:500;
+}
+td{padding:12px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2)}
+tr:hover td{background:rgba(255,255,255,.02);color:var(--text)}
+tr:last-child td{border-bottom:none}
+.tag{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
+.tag-green{background:rgba(34,201,122,.15);color:var(--green)}
+.tag-red{background:rgba(240,72,74,.15);color:var(--red)}
+.tag-amber{background:rgba(240,165,0,.15);color:var(--accent)}
+.tag-blue{background:rgba(74,158,255,.15);color:var(--blue)}
+.tag-purple{background:rgba(167,139,250,.15);color:var(--purple)}
+
+/* ── INVENTORY ──────────────────────────────────────── */
+.inv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.inv-item{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r2);padding:14px;
+  transition:border-color .2s;
+}
+.inv-item:hover{border-color:var(--border2)}
+.inv-name{font-size:13px;font-weight:500;margin-bottom:4px}
+.inv-meta{font-size:11px;color:var(--text3);margin-bottom:10px}
+.inv-stock{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.inv-stock-val{font-size:13px;font-weight:600}
+.prog-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;border-radius:2px;transition:width .4s}
+
+/* ── LEDGER ─────────────────────────────────────────── */
+.ledger-header{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;
+}
+.ledger-stat{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r2);padding:14px 16px;text-align:center;
+}
+.ledger-stat-val{font-family:var(--font-head);font-size:22px;font-weight:700;margin-bottom:4px}
+.ledger-stat-lbl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em}
+.customer-list{display:flex;flex-direction:column;gap:8px}
+.customer-row{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r2);padding:12px 16px;
+  display:flex;align-items:center;gap:14px;
+  transition:border-color .2s;cursor:pointer;
+}
+.customer-row:hover{border-color:var(--accent)}
+.cust-avatar{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.cust-name{font-size:13px;font-weight:500}
+.cust-sub{font-size:11px;color:var(--text3)}
+.cust-balance{margin-left:auto;text-align:right}
+.cust-bal-val{font-size:14px;font-weight:700}
+.cust-bal-lbl{font-size:10px;color:var(--text3)}
+
+/* udhaar detail panel */
+.udhaar-panel{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);padding:20px;
+  animation:fadein .2s ease;
+}
+.udhaar-timeline{display:flex;flex-direction:column;gap:0}
+.timeline-item{
+  display:flex;gap:14px;padding:10px 0;
+  position:relative;
+}
+.timeline-item::before{
+  content:'';position:absolute;left:15px;top:32px;
+  width:1px;height:calc(100% - 10px);
+  background:var(--border);
+}
+.timeline-item:last-child::before{display:none}
+.timeline-dot{
+  width:30px;height:30px;border-radius:50%;
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:600;
+}
+.tl-in{background:rgba(34,201,122,.2);color:var(--green)}
+.tl-out{background:rgba(240,72,74,.2);color:var(--red)}
+.tl-udhaar{background:rgba(240,165,0,.2);color:var(--accent)}
+.tl-body{flex:1;padding-top:4px}
+.tl-title{font-size:13px;font-weight:500}
+.tl-date{font-size:11px;color:var(--text3)}
+.tl-amount{font-size:14px;font-weight:700;margin-left:auto;padding-top:4px}
+
+/* ── B2B DIRECTORY ──────────────────────────────────── */
+.dir-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.dir-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);padding:18px;
+  transition:all .2s;cursor:pointer;position:relative;overflow:hidden;
+}
+.dir-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(240,165,0,.1)}
+.dir-card::after{
+  content:'';position:absolute;top:0;right:0;
+  width:60px;height:60px;border-radius:50%;
+  opacity:.05;transform:translate(15px,-15px);
+  background:var(--accent);
+}
+.dir-biz-icon{font-size:28px;margin-bottom:10px}
+.dir-biz-name{font-size:14px;font-weight:700;font-family:var(--font-head);margin-bottom:2px}
+.dir-biz-type{font-size:11px;color:var(--text3);margin-bottom:8px}
+.dir-biz-city{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px}
+.dir-actions{display:flex;gap:6px;margin-top:12px}
+.btn-xs{padding:4px 10px;font-size:11px;border-radius:6px}
+.rating{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--accent);margin-top:6px}
+
+/* ── MESSAGING ──────────────────────────────────────── */
+.msg-layout{display:grid;grid-template-columns:260px 1fr;gap:0;height:480px;border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.msg-sidebar{background:var(--bg3);border-right:1px solid var(--border);overflow-y:auto}
+.msg-search{padding:12px;border-bottom:1px solid var(--border)}
+.msg-search input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:7px 12px;color:var(--text);font-size:12px}
+.msg-thread{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;cursor:pointer;transition:background .15s;
+}
+.msg-thread:hover{background:var(--surface)}
+.msg-thread.active{background:rgba(240,165,0,.08)}
+.thread-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.thread-name{font-size:13px;font-weight:500}
+.thread-preview{font-size:11px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.thread-time{font-size:10px;color:var(--text3);margin-left:auto;align-self:flex-start;padding-top:2px}
+.msg-main{display:flex;flex-direction:column;background:var(--bg2)}
+.msg-topbar{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.msg-body{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.msg-bubble{max-width:70%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5}
+.msg-bubble.them{background:var(--surface);border-radius:4px 14px 14px 14px;align-self:flex-start}
+.msg-bubble.me{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;border-radius:14px 4px 14px 14px;align-self:flex-end}
+.msg-time-label{text-align:center;font-size:10px;color:var(--text3)}
+.msg-input-area{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:8px}
+.msg-input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:8px 14px;color:var(--text);font-size:13px;resize:none}
+.msg-input:focus{border-color:var(--accent)}
+.msg-send{
+  width:36px;height:36px;background:var(--accent);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:16px;color:#000;
+  flex-shrink:0;
+}
+.msg-send:hover{background:#ffb520;transform:scale(1.05)}
+
+/* ── ANALYTICS ──────────────────────────────────────── */
+.analytics-header{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.an-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r2);padding:14px 16px;
+  display:flex;align-items:center;gap:12px;
+}
+.an-icon{font-size:22px;width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.an-val{font-size:18px;font-weight:700;font-family:var(--font-head)}
+.an-lbl{font-size:11px;color:var(--text3)}
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.chart-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px}
+.chart-box.wide{grid-column:span 2}
+.chart-title{font-size:13px;font-weight:600;margin-bottom:4px;font-family:var(--font-head)}
+.chart-sub{font-size:11px;color:var(--text3);margin-bottom:14px}
+.chart-area{height:200px;position:relative}
+.chart-area.tall{height:260px}
+
+/* ── BUSINESS TYPE INDICATOR ────────────────────────── */
+.biz-indicator{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 12px;border-radius:20px;font-size:12px;font-weight:500;
+  border:1px solid var(--border2);
+  color:var(--text2);
+}
+
+/* ── MODAL ──────────────────────────────────────────── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);
+  display:flex;align-items:center;justify-content:center;
+  z-index:1000;opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--r3);padding:28px;width:440px;max-width:90vw;
+  transform:scale(.95);transition:transform .2s;
+}
+.modal-overlay.open .modal{transform:scale(1)}
+.modal-title{font-family:var(--font-head);font-size:18px;font-weight:700;margin-bottom:20px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:12px;color:var(--text3);margin-bottom:6px;display:block;font-weight:500;letter-spacing:.03em}
+.form-input{
+  width:100%;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r2);padding:9px 12px;color:var(--text);font-size:13px;
+  transition:border-color .15s;
+}
+.form-input:focus{border-color:var(--accent)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+select.form-input option{background:var(--bg2)}
+
+/* ── BUSINESS TYPE BADGE ────────────────────────────── */
+.type-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;
+}
+
+/* ── QUICK ACTIONS ──────────────────────────────────── */
+.quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.qa-btn{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r2);padding:14px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  cursor:pointer;transition:all .2s;
+}
+.qa-btn:hover{border-color:var(--accent);background:rgba(240,165,0,.05);transform:translateY(-2px)}
+.qa-icon{font-size:22px}
+.qa-label{font-size:11px;color:var(--text2);font-weight:500;text-align:center}
+
+/* ── NOTIFICATION TOAST ─────────────────────────────── */
+.toast{
+  position:fixed;bottom:24px;right:24px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r2);padding:12px 16px;
+  display:flex;align-items:center;gap:10px;
+  font-size:13px;z-index:2000;
+  transform:translateY(80px);opacity:0;
+  transition:all .3s ease;
+}
+.toast.show{transform:translateY(0);opacity:1}
+.toast-icon{font-size:16px}
+.toast-msg{flex:1}
+.toast.success{border-color:var(--green)}
+.toast.error{border-color:var(--red)}
+
+/* ── RESPONSIVE HELPERS ─────────────────────────────── */
+.flex{display:flex}.flex-col{flex-direction:column}.items-center{align-items:center}.gap-2{gap:8px}.gap-3{gap:12px}.ml-auto{margin-left:auto}
+.text-green{color:var(--green)}.text-red{color:var(--red)}.text-accent{color:var(--accent)}.text-muted{color:var(--text3)}
+.fw-700{font-weight:700}.fw-500{font-weight:500}
+.mb-3{margin-bottom:12px}.mb-4{margin-bottom:16px}.mb-5{margin-bottom:20px}
+
+/* ── TABS ───────────────────────────────────────────── */
+.tabs-bar{display:flex;gap:2px;background:var(--bg3);border-radius:var(--r2);padding:4px;margin-bottom:16px}
+.tab-btn{flex:1;padding:7px 12px;border-radius:var(--r2);font-size:12px;font-weight:500;background:none;border:none;color:var(--text3);cursor:pointer;transition:all .15s}
+.tab-btn.active{background:var(--surface);color:var(--text);box-shadow:var(--shadow2)}
+
+/* ── FILTER ROW ─────────────────────────────────────── */
+.filter-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.filter-chip{
+  padding:5px 12px;border-radius:20px;
+  font-size:11px;font-weight:500;border:1px solid var(--border);
+  background:transparent;color:var(--text3);cursor:pointer;transition:all .15s;
+}
+.filter-chip.active,.filter-chip:hover{border-color:var(--accent);color:var(--accent);background:rgba(240,165,0,.08)}
+
+/* ── PROGRESS RING ──────────────────────────────────── */
+.progress-ring-wrap{display:flex;align-items:center;justify-content:center;position:relative}
+.ring-label{position:absolute;text-align:center}
+.ring-val{font-size:18px;font-weight:700;font-family:var(--font-head)}
+.ring-sub{font-size:10px;color:var(--text3)}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ── SIDEBAR ── -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <div class="logo-icon">B</div>
+      <div>
+        <div class="logo-text">BizHub</div>
+        <div class="logo-sub">Ecosystem</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Business Switcher -->
+  <div class="biz-switcher" onclick="toggleBizDropdown()">
+    <div class="biz-name">
+      <span><span class="biz-dot" id="biz-dot" style="background:var(--accent)"></span><span id="current-biz-name">Rajan Auto Works</span></span>
+      <span style="color:var(--text3);font-size:12px">⌄</span>
+    </div>
+    <div class="biz-type" id="current-biz-type">🔧 Auto Mechanic</div>
+  </div>
+
+  <div class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <div class="nav-item active" onclick="navigate('dashboard')">
+      <span class="nav-icon">🏠</span> Dashboard
+    </div>
+    <div class="nav-item" onclick="navigate('inventory')">
+      <span class="nav-icon">📦</span> Inventory
+    </div>
+    <div class="nav-item" onclick="navigate('sales')">
+      <span class="nav-icon">💰</span> Daily Sales
+    </div>
+
+    <div class="nav-section">Finance</div>
+    <div class="nav-item" onclick="navigate('ledger')">
+      <span class="nav-icon">📒</span> Digital Ledger
+      <span class="nav-badge">3</span>
+    </div>
+    <div class="nav-item" onclick="navigate('udhaar')">
+      <span class="nav-icon">🤝</span> Udhaar / Credit
+    </div>
+
+    <div class="nav-section">Network</div>
+    <div class="nav-item" onclick="navigate('directory')">
+      <span class="nav-icon">🗂️</span> B2B Directory
+    </div>
+    <div class="nav-item" onclick="navigate('messages')">
+      <span class="nav-icon">💬</span> Messages
+      <span class="nav-badge">2</span>
+    </div>
+
+    <div class="nav-section">Insights</div>
+    <div class="nav-item" onclick="navigate('analytics')">
+      <span class="nav-icon">📊</span> Analytics
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-avatar">RK</div>
+      <div>
+        <div class="user-name">Rajan Kumar</div>
+        <div class="user-role">Owner · Pro Plan</div>
+      </div>
+      <div style="margin-left:auto;color:var(--text3);font-size:14px">⚙️</div>
+    </div>
+  </div>
+</nav>
+
+<!-- ── MAIN ── -->
+<div id="main">
+  <!-- TOP BAR -->
+  <header id="topbar">
+    <div class="page-title" id="page-title-text">Dashboard</div>
+    <div class="topbar-search">
+      <span style="color:var(--text3)">🔍</span>
+      <input type="text" placeholder="Search customers, items..." />
+    </div>
+    <div class="topbar-actions">
+      <div class="biz-indicator">
+        <span id="topbar-biz-icon">🔧</span>
+        <span id="topbar-biz-label">Auto Mechanic</span>
+      </div>
+      <div class="topbar-icon-btn notif-dot" title="Notifications">🔔</div>
+      <button class="btn btn-primary btn-sm" onclick="openModal('add-sale')">+ Add Sale</button>
+    </div>
+  </header>
+
+  <!-- PAGE CONTAINER -->
+  <div id="page-container">
+
+    <!-- ████ DASHBOARD PAGE ████ -->
+    <div id="page-dashboard" class="page active">
+      <!-- Stats -->
+      <div class="stat-grid">
+        <div class="stat-card green">
+          <div class="stat-icon">💵</div>
+          <div class="stat-label">Today's Revenue</div>
+          <div class="stat-value text-green" id="stat-revenue">₹0</div>
+          <div class="stat-delta up">▲ 12.4% vs yesterday</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-icon">🧾</div>
+          <div class="stat-label">Transactions</div>
+          <div class="stat-value" id="stat-txns">0</div>
+          <div class="stat-delta up">▲ 3 more than avg</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-icon">📦</div>
+          <div class="stat-label">Low Stock Items</div>
+          <div class="stat-value text-accent" id="stat-lowstock">0</div>
+          <div class="stat-delta down">▼ Action needed</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-icon">🤝</div>
+          <div class="stat-label">Pending Udhaar</div>
+          <div class="stat-value text-red" id="stat-udhaar">₹0</div>
+          <div class="stat-delta down">▼ 5 customers due</div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div>
+        <div class="section-header"><div class="section-title">Quick Actions</div></div>
+        <div class="quick-actions">
+          <div class="qa-btn" onclick="openModal('add-sale')"><span class="qa-icon">💰</span><span class="qa-label">Record Sale</span></div>
+          <div class="qa-btn" onclick="navigate('ledger')"><span class="qa-icon">📒</span><span class="qa-label">Add Transaction</span></div>
+          <div class="qa-btn" onclick="navigate('inventory')"><span class="qa-icon">📦</span><span class="qa-label">Update Stock</span></div>
+          <div class="qa-btn" onclick="navigate('directory')"><span class="qa-icon">🤝</span><span class="qa-label">Find Supplier</span></div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="chart-grid">
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Weekly Revenue</div>
+              <div class="section-sub">Last 7 days performance</div>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="weeklyChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="section-header">
+            <div>
+              <div class="section-title">Revenue Split</div>
+              <div class="section-sub">By category</div>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="donutChart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Recent Transactions -->
+      <div class="card">
+        <div class="section-header">
+          <div class="section-title">Recent Transactions</div>
+          <button class="btn btn-ghost btn-sm" onclick="navigate('ledger')">View All →</button>
+        </div>
+        <div class="table-wrap" id="dashboard-txns-table"></div>
+      </div>
+    </div>
+
+    <!-- ████ INVENTORY PAGE ████ -->
+    <div id="page-inventory" class="page">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Inventory Management</div>
+          <div class="section-sub" id="inv-sub-text">Managing stock for your business</div>
+        </div>
+        <div class="flex gap-2">
+          <div class="filter-row" id="inv-filters"></div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('add-item')">+ Add Item</button>
+        </div>
+      </div>
+      <div class="inv-grid" id="inv-grid"></div>
+    </div>
+
+    <!-- ████ DAILY SALES PAGE ████ -->
+    <div id="page-sales" class="page">
+      <div class="section-header">
+        <div class="section-title">Daily Sales Entry</div>
+        <button class="btn btn-primary btn-sm" onclick="openModal('add-sale')">+ Record Sale</button>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card green">
+          <div class="stat-label">Today Total</div>
+          <div class="stat-value text-green">₹18,450</div>
+          <div class="stat-delta up">▲ 8.2% vs yesterday</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-label">This Week</div>
+          <div class="stat-value">₹1,12,300</div>
+          <div class="stat-delta up">▲ 5.1%</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-label">This Month</div>
+          <div class="stat-value">₹4,28,750</div>
+          <div class="stat-delta up">▲ 14.6%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Avg per Sale</div>
+          <div class="stat-value">₹1,840</div>
+          <div class="stat-delta up">▲ 3.2%</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-header">
+          <div class="section-title">Today's Sales Log</div>
+          <div class="flex gap-2">
+            <select class="form-input" style="width:auto;padding:5px 10px;font-size:12px">
+              <option>All Categories</option>
+              <option>Services</option>
+              <option>Parts</option>
+              <option>Accessories</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap" id="sales-table"></div>
+      </div>
+    </div>
+
+    <!-- ████ LEDGER PAGE ████ -->
+    <div id="page-ledger" class="page">
+      <div class="section-header">
+        <div class="section-title">Digital Ledger</div>
+        <button class="btn btn-primary btn-sm" onclick="openModal('add-txn')">+ Add Transaction</button>
+      </div>
+
+      <div class="ledger-header">
+        <div class="ledger-stat">
+          <div class="ledger-stat-val text-green">₹3,42,800</div>
+          <div class="ledger-stat-lbl">💵 Total Received</div>
+        </div>
+        <div class="ledger-stat">
+          <div class="ledger-stat-val text-red">₹1,18,450</div>
+          <div class="ledger-stat-lbl">💸 Total Spent</div>
+        </div>
+        <div class="ledger-stat">
+          <div class="ledger-stat-val" style="color:var(--blue)">₹2,24,350</div>
+          <div class="ledger-stat-lbl">📊 Net Balance</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:320px 1fr;gap:14px">
+        <!-- Customer List -->
+        <div class="card" style="padding:16px">
+          <div class="section-header"><div class="section-title" style="font-size:13px">Customers</div></div>
+          <div style="margin-bottom:10px">
+            <input class="form-input" placeholder="Search customer..." style="font-size:12px;padding:7px 10px">
+          </div>
+          <div class="customer-list" id="customer-list"></div>
+        </div>
+
+        <!-- Transaction Detail -->
+        <div class="udhaar-panel" id="ledger-detail">
+          <div class="section-header">
+            <div>
+              <div class="section-title" id="detail-name">Select a customer</div>
+              <div class="section-sub" id="detail-sub">Click a customer to view their ledger</div>
+            </div>
+            <div id="detail-actions"></div>
+          </div>
+          <div id="timeline-wrap"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ████ UDHAAR PAGE ████ -->
+    <div id="page-udhaar" class="page">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Udhaar / Credit Tracker</div>
+          <div class="section-sub">Outstanding balances and credit management</div>
+        </div>
+        <div class="flex gap-2">
+          <div class="filter-row">
+            <button class="filter-chip active">All</button>
+            <button class="filter-chip">Overdue</button>
+            <button class="filter-chip">Due Soon</button>
+            <button class="filter-chip">Cleared</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
+        <div class="card-sm flex items-center gap-3">
+          <div style="font-size:24px">⚠️</div>
+          <div><div style="font-size:18px;font-weight:700;color:var(--red)">₹78,200</div><div class="text-muted" style="font-size:11px">Overdue (60+ days)</div></div>
+        </div>
+        <div class="card-sm flex items-center gap-3">
+          <div style="font-size:24px">⏳</div>
+          <div><div style="font-size:18px;font-weight:700;color:var(--accent)">₹1,24,500</div><div class="text-muted" style="font-size:11px">Due in 30 days</div></div>
+        </div>
+        <div class="card-sm flex items-center gap-3">
+          <div style="font-size:24px">✅</div>
+          <div><div style="font-size:18px;font-weight:700;color:var(--green)">₹2,18,000</div><div class="text-muted" style="font-size:11px">Cleared this month</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-header"><div class="section-title">Active Credit Accounts</div></div>
+        <div class="table-wrap" id="udhaar-table"></div>
+      </div>
+    </div>
+
+    <!-- ████ DIRECTORY PAGE ████ -->
+    <div id="page-directory" class="page">
+      <div class="section-header">
+        <div>
+          <div class="section-title">B2B Business Directory</div>
+          <div class="section-sub">Find local businesses for referrals & bulk purchases</div>
+        </div>
+        <div class="flex gap-2">
+          <div class="filter-row" id="dir-filters"></div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-bottom:16px">
+        <div class="topbar-search" style="max-width:none;flex:1">
+          <span style="color:var(--text3)">🔍</span>
+          <input type="text" placeholder="Search businesses, services, products..." style="width:100%"/>
+        </div>
+        <select class="form-input" style="width:160px;padding:7px 12px">
+          <option>All Cities</option>
+          <option>Pune</option>
+          <option>Mumbai</option>
+          <option>Nagpur</option>
+        </select>
+      </div>
+
+      <div class="dir-grid" id="dir-grid"></div>
+    </div>
+
+    <!-- ████ MESSAGES PAGE ████ -->
+    <div id="page-messages" class="page">
+      <div class="section-header">
+        <div class="section-title">Business Messages</div>
+        <button class="btn btn-ghost btn-sm">+ New Conversation</button>
+      </div>
+      <div class="msg-layout">
+        <div class="msg-sidebar">
+          <div class="msg-search">
+            <input type="text" placeholder="Search conversations..." />
+          </div>
+          <div id="msg-threads"></div>
+        </div>
+        <div class="msg-main">
+          <div class="msg-topbar" id="msg-topbar">
+            <div class="thread-avatar" style="background:linear-gradient(135deg,#22c97a,#4a9eff)">GS</div>
+            <div>
+              <div style="font-size:13px;font-weight:600">Gupta Steel Traders</div>
+              <div style="font-size:11px;color:var(--green)">● Online</div>
+            </div>
+            <div style="margin-left:auto;display:flex;gap:6px">
+              <div class="topbar-icon-btn" style="width:30px;height:30px;font-size:14px">📞</div>
+              <div class="topbar-icon-btn" style="width:30px;height:30px;font-size:14px">⋮</div>
+            </div>
+          </div>
+          <div class="msg-body" id="msg-body"></div>
+          <div class="msg-input-area">
+            <textarea class="msg-input" rows="1" placeholder="Type a message..." id="msg-input-field"></textarea>
+            <button class="msg-send" onclick="sendMessage()">➤</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ████ ANALYTICS PAGE ████ -->
+    <div id="page-analytics" class="page">
+      <div class="section-header">
+        <div class="section-title">Analytics & Reports</div>
+        <div class="flex gap-2">
+          <div class="tabs-bar" style="margin-bottom:0;width:auto">
+            <button class="tab-btn active" onclick="switchAnalyticsPeriod('monthly',this)">Monthly</button>
+            <button class="tab-btn" onclick="switchAnalyticsPeriod('annual',this)">Annual</button>
+          </div>
+          <button class="btn btn-ghost btn-sm">⬇ Export</button>
+        </div>
+      </div>
+
+      <div class="analytics-header">
+        <div class="an-card">
+          <div class="an-icon" style="background:rgba(34,201,122,.15)">💰</div>
+          <div><div class="an-val text-green">₹51.4L</div><div class="an-lbl">Annual Revenue</div></div>
+        </div>
+        <div class="an-card">
+          <div class="an-icon" style="background:rgba(74,158,255,.15)">📈</div>
+          <div><div class="an-val" style="color:var(--blue)">+22.8%</div><div class="an-lbl">YoY Growth</div></div>
+        </div>
+        <div class="an-card">
+          <div class="an-icon" style="background:rgba(240,165,0,.15)">🏆</div>
+          <div><div class="an-val text-accent">Mar</div><div class="an-lbl">Best Month</div></div>
+        </div>
+        <div class="an-card">
+          <div class="an-icon" style="background:rgba(167,139,250,.15)">👥</div>
+          <div><div class="an-val" style="color:var(--purple)">284</div><div class="an-lbl">Active Customers</div></div>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <div class="chart-box wide">
+          <div class="chart-title" id="main-chart-title">Monthly Sales Trend</div>
+          <div class="chart-sub">Revenue breakdown per month with profit margin overlay</div>
+          <div class="chart-area tall"><canvas id="monthlyChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <div class="chart-box">
+          <div class="chart-title">Top Services / Products</div>
+          <div class="chart-sub">By revenue contribution</div>
+          <div class="chart-area"><canvas id="topServicesChart"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-title">Udhaar Aging Report</div>
+          <div class="chart-sub">Outstanding credit by age bucket</div>
+          <div class="chart-area"><canvas id="agingChart"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-container -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ── MODALS ── -->
+<div class="modal-overlay" id="modal-add-sale">
+  <div class="modal">
+    <div class="modal-title">Record New Sale</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Customer Name</label>
+        <input class="form-input" type="text" placeholder="Enter customer name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input class="form-input" type="date" id="sale-date">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Item / Service</label>
+      <input class="form-input" type="text" placeholder="e.g., Oil Change, Haircut, Tomatoes 5kg">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Amount (₹)</label>
+        <input class="form-input" type="number" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Payment Mode</label>
+        <select class="form-input">
+          <option>Cash</option>
+          <option>UPI</option>
+          <option>Card</option>
+          <option>Udhaar (Credit)</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Category</label>
+      <select class="form-input" id="sale-category"></select>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeModal('add-sale')">Cancel</button>
+      <button class="btn btn-primary" style="flex:1" onclick="submitSale()">Save Sale ✓</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-add-txn">
+  <div class="modal">
+    <div class="modal-title">Add Ledger Transaction</div>
+    <div class="form-group">
+      <label class="form-label">Transaction Type</label>
+      <div class="tabs-bar" style="margin-bottom:0">
+        <button class="tab-btn active" id="txn-in-btn" onclick="setTxnType('in')">💵 Money In</button>
+        <button class="tab-btn" id="txn-out-btn" onclick="setTxnType('out')">💸 Money Out</button>
+        <button class="tab-btn" id="txn-udhaar-btn" onclick="setTxnType('udhaar')">🤝 Udhaar</button>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Customer Name</label>
+        <input class="form-input" type="text" placeholder="Customer or vendor">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Amount (₹)</label>
+        <input class="form-input" type="number" placeholder="0">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Description</label>
+      <input class="form-input" type="text" placeholder="What is this for?">
+    </div>
+    <div class="form-group" id="udhaar-extra" style="display:none">
+      <label class="form-label">Due Date (Udhaar)</label>
+      <input class="form-input" type="date">
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeModal('add-txn')">Cancel</button>
+      <button class="btn btn-primary" style="flex:1" onclick="submitTxn()">Save Transaction ✓</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-add-item">
+  <div class="modal">
+    <div class="modal-title">Add Inventory Item</div>
+    <div class="form-group">
+      <label class="form-label">Item Name</label>
+      <input class="form-input" type="text" placeholder="e.g., Engine Oil 5W-30">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Quantity</label>
+        <input class="form-input" type="number" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Unit</label>
+        <select class="form-input">
+          <option>pcs</option><option>kg</option><option>L</option><option>box</option><option>dozen</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Buying Price (₹)</label>
+        <input class="form-input" type="number" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Selling Price (₹)</label>
+        <input class="form-input" type="number" placeholder="0">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Low Stock Alert Below</label>
+      <input class="form-input" type="number" placeholder="e.g., 5">
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeModal('add-item')">Cancel</button>
+      <button class="btn btn-primary" style="flex:1" onclick="submitItem()">Add Item ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toast-icon">✅</span>
+  <span class="toast-msg" id="toast-msg">Action completed</span>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   DATA STORE — Simulates Python Flask backend
+   In production: Replace with fetch() calls to
+   Flask REST API endpoints
+   ═══════════════════════════════════════════════ */
+
+const BUSINESSES = [
+  { id:1, name:'Rajan Auto Works',  type:'mechanic', icon:'🔧', color:'#4a9eff', owner:'Rajan Kumar', city:'Pune' },
+  { id:2, name:"Priya's Salon",     type:'salon',    icon:'✂️', color:'#a78bfa', owner:'Priya Sharma', city:'Pune' },
+  { id:3, name:'Mohan Kirana',      type:'grocer',   icon:'🛒', color:'#22c97a', owner:'Mohan Lal', city:'Pune' },
+];
+
+const BIZ_TYPES = {
+  mechanic: { label:'Auto Mechanic', color:'#4a9eff', bg:'rgba(74,158,255,.1)',
+    categories:['Labour','Oil & Lubricants','Spare Parts','Accessories','Tyres & Batteries'],
+    inventory:[
+      {name:'Engine Oil 5W-30',qty:28,max:50,unit:'L',buy:180,sell:280,low:10,cat:'Oil & Lubricants'},
+      {name:'Brake Pads (Maruti)',qty:4,max:20,unit:'set',buy:350,sell:650,low:5,cat:'Spare Parts'},
+      {name:'Air Filter',qty:12,max:30,unit:'pcs',buy:120,sell:220,low:8,cat:'Spare Parts'},
+      {name:'Spark Plugs',qty:2,max:40,unit:'pcs',buy:80,sell:150,low:10,cat:'Spare Parts'},
+      {name:'Coolant',qty:15,max:30,unit:'L',buy:95,sell:160,low:8,cat:'Oil & Lubricants'},
+      {name:'Wiper Blades',qty:8,max:20,unit:'pcs',buy:120,sell:200,low:5,cat:'Accessories'},
+    ]
+  },
+  salon: { label:'Beauty Salon', color:'#a78bfa', bg:'rgba(167,139,250,.1)',
+    categories:['Haircut','Colour','Facial','Manicure','Bridal'],
+    inventory:[
+      {name:'L\'Oréal Hair Dye',qty:18,max:40,unit:'box',buy:280,sell:450,low:8,cat:'Colour'},
+      {name:'Keratin Treatment',qty:5,max:15,unit:'pcs',buy:1200,sell:2200,low:3,cat:'Haircut'},
+      {name:'Nail Polish Set',qty:3,max:20,unit:'set',buy:350,sell:600,low:5,cat:'Manicure'},
+      {name:'Face Pack — Nykaa',qty:22,max:50,unit:'pcs',buy:80,sell:150,low:10,cat:'Facial'},
+      {name:'Shampoo (Prof.)',qty:8,max:20,unit:'L',buy:420,sell:650,low:4,cat:'Haircut'},
+      {name:'Bleach Cream',qty:2,max:15,unit:'pcs',buy:120,sell:200,low:5,cat:'Facial'},
+    ]
+  },
+  grocer: { label:'Grocery Store', color:'#22c97a', bg:'rgba(34,201,122,.1)',
+    categories:['Vegetables','Grains','Dairy','Snacks','Spices'],
+    inventory:[
+      {name:'Basmati Rice 5kg',qty:42,max:100,unit:'bags',buy:280,sell:380,low:15,cat:'Grains'},
+      {name:'Toor Dal 1kg',qty:8,max:80,unit:'pcs',buy:95,sell:140,low:20,cat:'Grains'},
+      {name:'Amul Butter 500g',qty:5,max:30,unit:'pcs',buy:230,sell:280,low:8,cat:'Dairy'},
+      {name:'Tomatoes',qty:12,max:50,unit:'kg',buy:18,sell:40,low:10,cat:'Vegetables'},
+      {name:'Lay\'s Chips',qty:60,max:120,unit:'pcs',buy:10,sell:20,low:20,cat:'Snacks'},
+      {name:'Cumin Seeds 200g',qty:3,max:40,unit:'pcs',buy:35,sell:60,low:10,cat:'Spices'},
+    ]
+  }
+};
+
+const CUSTOMERS = [
+  { id:1, name:'Arvind Patil',   initial:'AP', color:'#4a9eff', balance:4200,  type:'credit', phone:'9876543210' },
+  { id:2, name:'Sunita Joshi',   initial:'SJ', color:'#a78bfa', balance:-800,  type:'debit',  phone:'9823456789' },
+  { id:3, name:'Ramesh Yadav',   initial:'RY', color:'#22c97a', balance:12400, type:'credit', phone:'9012345678' },
+  { id:4, name:'Kamla Devi',     initial:'KD', color:'#f0a500', balance:-200,  type:'debit',  phone:'9765432101' },
+  { id:5, name:'Vijay Singh',    initial:'VS', color:'#ff6b35', balance:7800,  type:'credit', phone:'9345678901' },
+];
+
+const LEDGER_TXN = {
+  1: [
+    {type:'in',    label:'Engine Oil Change',        amount:850,   date:'Jun 15, 2025'},
+    {type:'udhaar',label:'Brake Pad Replacement',    amount:1800,  date:'Jun 12, 2025'},
+    {type:'in',    label:'Settlement — prev balance',amount:1200,  date:'Jun 10, 2025'},
+    {type:'out',   label:'Refund — defective part',  amount:350,   date:'Jun 8, 2025'},
+    {type:'in',    label:'Tyre Alignment',           amount:400,   date:'Jun 5, 2025'},
+  ],
+  2: [
+    {type:'in',    label:'Haircut + Blow Dry',       amount:600,   date:'Jun 14, 2025'},
+    {type:'out',   label:'Overpaid — refunded',      amount:200,   date:'Jun 10, 2025'},
+    {type:'in',    label:'Facial Package',           amount:1800,  date:'Jun 2, 2025'},
+  ],
+  3: [
+    {type:'in',    label:'Weekly grocery',           amount:2400,  date:'Jun 16, 2025'},
+    {type:'udhaar',label:'Monthly rations',          amount:5200,  date:'Jun 1, 2025'},
+    {type:'in',    label:'Settlement — May',         amount:5200,  date:'May 31, 2025'},
+    {type:'in',    label:'Dahi + Butter order',      amount:600,   date:'May 28, 2025'},
+  ],
+};
+
+const UDHAAR_DATA = [
+  { name:'Arvind Patil',  initial:'AP', color:'#4a9eff', amount:4200,  due:'Jul 15, 2025', status:'due_soon', days:12 },
+  { name:'Ramesh Yadav',  initial:'RY', color:'#22c97a', amount:12400, due:'Jun 30, 2025', status:'overdue', days:-2 },
+  { name:'Vijay Singh',   initial:'VS', color:'#ff6b35', amount:7800,  due:'Jul 28, 2025', status:'ok', days:25 },
+  { name:'Deepa Nair',    initial:'DN', color:'#2dd4bf', amount:3200,  due:'Jun 28, 2025', status:'overdue', days:-4 },
+  { name:'Suresh Kumar',  initial:'SK', color:'#a78bfa', amount:9100,  due:'Aug 2, 2025',  status:'ok', days:30 },
+];
+
+const DIRECTORY_BUSINESSES = [
+  { name:'Gupta Steel Traders',    type:'Steel & Hardware',  city:'Pune',   icon:'🔩', rating:4.8, reviews:124, tags:['Bulk','B2B'], color:'#4a9eff' },
+  { name:'Verma Electrical Co.',   type:'Electrical Parts',  city:'Pune',   icon:'⚡', rating:4.5, reviews:89,  tags:['Wholesale'], color:'#f0a500' },
+  { name:'City Fresh Vegetables',  type:'Wholesale Veggies', city:'Mumbai', icon:'🥦', rating:4.7, reviews:203, tags:['Daily','Fresh'], color:'#22c97a' },
+  { name:'Sharma Textiles',        type:'Fabric & Thread',   city:'Nagpur', icon:'🧵', rating:4.3, reviews:67,  tags:['Bulk','Custom'], color:'#a78bfa' },
+  { name:'Kiran Beauty Supplies',  type:'Salon Products',    city:'Pune',   icon:'💄', rating:4.9, reviews:311, tags:['Wholesale','B2B'], color:'#ff6b35' },
+  { name:'Patel Packaging',        type:'Boxes & Materials', city:'Pune',   icon:'📦', rating:4.2, reviews:54,  tags:['Bulk'], color:'#2dd4bf' },
+];
+
+const MESSAGES = [
+  { id:1, name:'Gupta Steel Traders',   initial:'GS', color:'linear-gradient(135deg,#22c97a,#4a9eff)',   preview:'We can offer 5% discount', unread:1, active:true },
+  { id:2, name:'Kiran Beauty Supplies', initial:'KB', color:'linear-gradient(135deg,#ff6b35,#a78bfa)',   preview:'Catalogue sent, check it!', unread:1, active:false },
+  { id:3, name:'City Fresh Veg.',       initial:'CF', color:'linear-gradient(135deg,#22c97a,#2dd4bf)',   preview:'OK, 6am delivery confirmed', unread:0, active:false },
+];
+
+const MSG_HISTORY = [
+  { side:'them', text:'Hello! We noticed you need engine parts for your workshop.', time:'10:02 AM' },
+  { side:'me',   text:'Yes, looking for brake pads in bulk — Maruti & Honda variants.', time:'10:05 AM' },
+  { side:'them', text:'We have both! Minimum order 50 sets. We can offer 5% discount on bulk orders.', time:'10:07 AM' },
+  { side:'me',   text:'Sounds good. Can you send me the price list?', time:'10:09 AM' },
+  { side:'them', text:'Sending it right now on WhatsApp. Also we have free delivery above ₹10,000.', time:'10:10 AM' },
+];
+
+const SALES_DATA = [
+  { id:'S001', customer:'Arvind Patil',  item:'Engine Oil Change',      cat:'Labour',        amount:850,  mode:'Cash',   time:'09:14 AM' },
+  { id:'S002', customer:'Sunita Rao',    item:'Brake Pad Replacement',  cat:'Spare Parts',   amount:1800, mode:'UPI',    time:'10:42 AM' },
+  { id:'S003', customer:'Walk-in',       item:'Tyre Alignment',         cat:'Labour',        amount:400,  mode:'Cash',   time:'11:30 AM' },
+  { id:'S004', customer:'Ramesh Yadav',  item:'Battery Replacement',    cat:'Accessories',   amount:3200, mode:'Udhaar', time:'12:15 PM' },
+  { id:'S005', customer:'Walk-in',       item:'Engine Oil 4L',          cat:'Oil & Lubricants',amount:1120,mode:'UPI',  time:'02:00 PM' },
+  { id:'S006', customer:'Vijay Singh',   item:'Full Service',           cat:'Labour',        amount:5400, mode:'Card',   time:'03:30 PM' },
+  { id:'S007', customer:'Walk-in',       item:'Air Filter Change',      cat:'Spare Parts',   amount:340,  mode:'Cash',   time:'04:45 PM' },
+];
+
+/* ═══════════════════════════════════════════════
+   CHARTS — Chart.js
+   ═══════════════════════════════════════════════ */
+let chartInstances = {};
+
+const CHART_DEFAULTS = {
+  responsive:true, maintainAspectRatio:false,
+  plugins:{ legend:{ display:false }, tooltip:{ backgroundColor:'#1e2330', borderColor:'#2a3045', borderWidth:1, titleColor:'#e8ecf4', bodyColor:'#8b93a8', padding:10, cornerRadius:8 }},
+};
+
+function initCharts() {
+  Chart.defaults.color = '#8b93a8';
+  Chart.defaults.borderColor = '#2a3045';
+  Chart.defaults.font.family = "'DM Sans', sans-serif";
+
+  /* Weekly bar chart */
+  const wctx = document.getElementById('weeklyChart');
+  if(wctx && !chartInstances.weekly) {
+    chartInstances.weekly = new Chart(wctx, {
+      type:'bar',
+      data:{
+        labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        datasets:[{
+          label:'Revenue',
+          data:[12400,9800,15600,18200,14300,22100,18450],
+          backgroundColor:'rgba(240,165,0,.7)',
+          hoverBackgroundColor:'#f0a500',
+          borderRadius:6,
+          borderSkipped:false,
+        }]
+      },
+      options:{...CHART_DEFAULTS, scales:{
+        x:{ grid:{display:false}, ticks:{color:'#5a6278'} },
+        y:{ grid:{color:'#1a1e28'}, ticks:{color:'#5a6278', callback:v=>'₹'+(v/1000)+'k'} }
+      }}
+    });
+  }
+
+  /* Donut chart */
+  const dctx = document.getElementById('donutChart');
+  if(dctx && !chartInstances.donut) {
+    const biz = BUSINESSES.find(b=>b.id===currentBizId);
+    const cats = BIZ_TYPES[biz.type].categories.slice(0,4);
+    chartInstances.donut = new Chart(dctx, {
+      type:'doughnut',
+      data:{
+        labels:cats,
+        datasets:[{ data:[35,28,22,15], backgroundColor:['#f0a500','#4a9eff','#22c97a','#a78bfa'], borderColor:'transparent', hoverOffset:8 }]
+      },
+      options:{...CHART_DEFAULTS, cutout:'65%', plugins:{...CHART_DEFAULTS.plugins, legend:{display:true, position:'bottom', labels:{color:'#8b93a8', padding:12, font:{size:11}}}}}
+    });
+  }
+
+  /* Monthly analytics chart */
+  const mctx = document.getElementById('monthlyChart');
+  if(mctx && !chartInstances.monthly) {
+    chartInstances.monthly = new Chart(mctx, {
+      type:'bar',
+      data:{
+        labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+        datasets:[
+          { label:'Revenue', data:[320000,285000,480000,390000,420000,514000,440000,380000,502000,468000,392000,612000], backgroundColor:'rgba(240,165,0,.6)', hoverBackgroundColor:'#f0a500', borderRadius:6, borderSkipped:false, yAxisID:'y' },
+          { label:'Profit', type:'line', data:[96000,85500,144000,117000,126000,154200,132000,114000,150600,140400,117600,183600], borderColor:'#22c97a', backgroundColor:'rgba(34,201,122,.1)', tension:0.4, fill:true, pointRadius:4, pointBackgroundColor:'#22c97a', yAxisID:'y' },
+        ]
+      },
+      options:{...CHART_DEFAULTS, interaction:{mode:'index',intersect:false}, plugins:{...CHART_DEFAULTS.plugins, legend:{display:true, position:'top', align:'end', labels:{color:'#8b93a8', usePointStyle:true, padding:16, font:{size:12}}}},
+        scales:{
+          x:{ grid:{display:false}, ticks:{color:'#5a6278'} },
+          y:{ grid:{color:'#1a1e28'}, ticks:{color:'#5a6278', callback:v=>'₹'+(v/1000)+'k'} }
+        }
+      }
+    });
+  }
+
+  /* Top services */
+  const tsctx = document.getElementById('topServicesChart');
+  if(tsctx && !chartInstances.topServices) {
+    const biz = BUSINESSES.find(b=>b.id===currentBizId);
+    const cats = BIZ_TYPES[biz.type].categories;
+    chartInstances.topServices = new Chart(tsctx, {
+      type:'bar',
+      data:{
+        labels:cats,
+        datasets:[{ label:'Revenue', data:[210000,185000,148000,92000,78000].slice(0,cats.length), backgroundColor:['#f0a500','#4a9eff','#22c97a','#a78bfa','#ff6b35'], borderRadius:4 }]
+      },
+      options:{...CHART_DEFAULTS, indexAxis:'y', scales:{
+        x:{ grid:{color:'#1a1e28'}, ticks:{color:'#5a6278',callback:v=>'₹'+(v/1000)+'k'} },
+        y:{ grid:{display:false}, ticks:{color:'#8b93a8'} }
+      }}
+    });
+  }
+
+  /* Aging */
+  const actx = document.getElementById('agingChart');
+  if(actx && !chartInstances.aging) {
+    chartInstances.aging = new Chart(actx, {
+      type:'bar',
+      data:{
+        labels:['0–30 days','31–60 days','60+ days'],
+        datasets:[{ label:'Outstanding', data:[124500,45800,78200], backgroundColor:['rgba(34,201,122,.6)','rgba(240,165,0,.6)','rgba(240,72,74,.6)'], hoverBackgroundColor:['#22c97a','#f0a500','#f0484a'], borderRadius:6, borderSkipped:false }]
+      },
+      options:{...CHART_DEFAULTS, scales:{
+        x:{ grid:{display:false}, ticks:{color:'#5a6278'} },
+        y:{ grid:{color:'#1a1e28'}, ticks:{color:'#5a6278',callback:v=>'₹'+(v/1000)+'k'} }
+      }}
+    });
+  }
+}
+
+function switchAnalyticsPeriod(period, btn) {
+  document.querySelectorAll('#page-analytics .tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('main-chart-title').textContent = period==='annual' ? 'Annual Revenue Trend' : 'Monthly Sales Trend';
+  if(chartInstances.monthly) {
+    const data = period==='annual'
+      ? [2800000,3200000,3800000,4100000,4500000,5140000]
+      : [320000,285000,480000,390000,420000,514000,440000,380000,502000,468000,392000,612000];
+    const labels = period==='annual' ? ['2019','2020','2021','2022','2023','2024'] : ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    chartInstances.monthly.data.labels = labels;
+    chartInstances.monthly.data.datasets[0].data = data;
+    chartInstances.monthly.data.datasets[1].data = data.map(v=>Math.round(v*.3));
+    chartInstances.monthly.update();
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════════════ */
+let currentBizId = 1;
+let currentPage = 'dashboard';
+
+const PAGE_TITLES = { dashboard:'Dashboard', inventory:'Inventory', sales:'Daily Sales', ledger:'Digital Ledger', udhaar:'Udhaar / Credit', directory:'B2B Directory', messages:'Messages', analytics:'Analytics' };
+
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    if(n.getAttribute('onclick')?.includes("'"+page+"'")) n.classList.add('active');
+  });
+  document.getElementById('page-title-text').textContent = PAGE_TITLES[page];
+  currentPage = page;
+  if(page==='analytics' || page==='dashboard') setTimeout(initCharts, 80);
+  if(page==='inventory') renderInventory();
+  if(page==='ledger') renderLedger();
+  if(page==='udhaar') renderUdhaar();
+  if(page==='directory') renderDirectory();
+  if(page==='messages') renderMessages();
+  if(page==='sales') renderSales();
+}
+
+/* ═══════════════════════════════════════════════
+   RENDER FUNCTIONS
+   ═══════════════════════════════════════════════ */
+
+function renderDashboard() {
+  const biz = BUSINESSES.find(b=>b.id===currentBizId);
+  const bizData = BIZ_TYPES[biz.type];
+
+  // Stats
+  const rev = SALES_DATA.reduce((s,t)=>s+t.amount,0);
+  const udhaarTotal = UDHAAR_DATA.reduce((s,u)=>s+u.amount,0);
+  const lowStk = BIZ_TYPES[biz.type].inventory.filter(i=>i.qty<=i.low).length;
+  document.getElementById('stat-revenue').textContent = '₹'+rev.toLocaleString('en-IN');
+  document.getElementById('stat-txns').textContent = SALES_DATA.length;
+  document.getElementById('stat-lowstock').textContent = lowStk;
+  document.getElementById('stat-udhaar').textContent = '₹'+udhaarTotal.toLocaleString('en-IN');
+
+  // Transactions table
+  const el = document.getElementById('dashboard-txns-table');
+  el.innerHTML = `<table>
+    <thead><tr><th>ID</th><th>Customer</th><th>Item</th><th>Category</th><th>Amount</th><th>Mode</th><th>Time</th></tr></thead>
+    <tbody>${SALES_DATA.slice(0,5).map(t=>`
+      <tr>
+        <td><span style="font-family:var(--font-mono);font-size:11px;color:var(--text3)">${t.id}</span></td>
+        <td style="font-weight:500;color:var(--text)">${t.customer}</td>
+        <td>${t.item}</td>
+        <td><span class="tag tag-blue">${t.cat}</span></td>
+        <td style="font-weight:700;color:var(--green)">₹${t.amount.toLocaleString('en-IN')}</td>
+        <td><span class="tag ${t.mode==='Udhaar'?'tag-amber':'tag-green'}">${t.mode}</span></td>
+        <td style="color:var(--text3)">${t.time}</td>
+      </tr>`).join('')}</tbody>
+  </table>`;
+
+  // Sale category dropdown
+  const sc = document.getElementById('sale-category');
+  if(sc){ sc.innerHTML = bizData.categories.map(c=>`<option>${c}</option>`).join(''); }
+
+  // Set biz indicator
+  document.getElementById('topbar-biz-icon').textContent = biz.icon;
+  document.getElementById('topbar-biz-label').textContent = bizData.label;
+  document.getElementById('current-biz-name').textContent = biz.name;
+  document.getElementById('current-biz-type').textContent = biz.icon+' '+bizData.label;
+  document.getElementById('biz-dot').style.background = biz.color;
+}
+
+function renderInventory() {
+  const biz = BUSINESSES.find(b=>b.id===currentBizId);
+  const inv = BIZ_TYPES[biz.type].inventory;
+  document.getElementById('inv-sub-text').textContent = `${inv.length} items tracked · ${inv.filter(i=>i.qty<=i.low).length} low stock`;
+
+  const grid = document.getElementById('inv-grid');
+  grid.innerHTML = inv.map(item=>{
+    const pct = Math.round((item.qty/item.max)*100);
+    const isLow = item.qty <= item.low;
+    const color = isLow ? 'var(--red)' : pct>60 ? 'var(--green)' : 'var(--accent)';
+    return `<div class="inv-item">
+      <div class="flex items-center gap-2 mb-3">
+        <div class="inv-name" style="flex:1">${item.name}</div>
+        ${isLow?'<span class="tag tag-red">Low</span>':''}
+      </div>
+      <div class="inv-meta">${item.cat} · Buy: ₹${item.buy} · Sell: ₹${item.sell}</div>
+      <div class="inv-stock">
+        <span style="font-size:12px;color:var(--text3)">Stock</span>
+        <span class="inv-stock-val" style="color:${color}">${item.qty} ${item.unit}</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" style="width:${pct}%;background:${color}"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:var(--text3)">
+        <span>Low: ${item.low} ${item.unit}</span><span>Max: ${item.max} ${item.unit}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderSales() {
+  const el = document.getElementById('sales-table');
+  el.innerHTML = `<table>
+    <thead><tr><th>ID</th><th>Time</th><th>Customer</th><th>Item / Service</th><th>Category</th><th>Amount</th><th>Payment</th></tr></thead>
+    <tbody>${SALES_DATA.map(t=>`
+      <tr>
+        <td><span style="font-family:var(--font-mono);font-size:11px;color:var(--text3)">${t.id}</span></td>
+        <td style="color:var(--text3)">${t.time}</td>
+        <td style="font-weight:500;color:var(--text)">${t.customer}</td>
+        <td>${t.item}</td>
+        <td><span class="tag tag-blue">${t.cat}</span></td>
+        <td style="font-weight:700;color:var(--green)">₹${t.amount.toLocaleString('en-IN')}</td>
+        <td><span class="tag ${t.mode==='Udhaar'?'tag-amber':t.mode==='Cash'?'tag-green':'tag-blue'}">${t.mode}</span></td>
+      </tr>`).join('')}</tbody>
+  </table>`;
+}
+
+function renderLedger() {
+  const list = document.getElementById('customer-list');
+  list.innerHTML = CUSTOMERS.map(c=>`
+    <div class="customer-row" onclick="showCustomerDetail(${c.id})">
+      <div class="cust-avatar" style="background:${c.color}">${c.initial}</div>
+      <div>
+        <div class="cust-name">${c.name}</div>
+        <div class="cust-sub">${c.phone}</div>
+      </div>
+      <div class="cust-balance">
+        <div class="cust-bal-val" style="color:${c.balance>0?'var(--green)':'var(--red)'}">
+          ${c.balance>0?'+':''}₹${Math.abs(c.balance).toLocaleString('en-IN')}
+        </div>
+        <div class="cust-bal-lbl">${c.balance>0?'Receivable':'Payable'}</div>
+      </div>
+    </div>`).join('');
+}
+
+function showCustomerDetail(id) {
+  const c = CUSTOMERS.find(x=>x.id===id);
+  const txns = LEDGER_TXN[id]||[];
+  document.getElementById('detail-name').textContent = c.name;
+  document.getElementById('detail-sub').textContent = `Balance: ₹${Math.abs(c.balance).toLocaleString('en-IN')} ${c.balance>0?'receivable':'payable'}`;
+  document.getElementById('detail-actions').innerHTML = `<button class="btn btn-primary btn-sm" onclick="showToast('Statement shared via WhatsApp!','success')">📤 Share Statement</button>`;
+
+  document.getElementById('timeline-wrap').innerHTML = txns.length ? `
+    <div class="udhaar-timeline">
+      ${txns.map(t=>`
+        <div class="timeline-item">
+          <div class="timeline-dot ${t.type==='in'?'tl-in':t.type==='out'?'tl-out':'tl-udhaar'}">
+            ${t.type==='in'?'↓':t.type==='out'?'↑':'U'}
+          </div>
+          <div class="tl-body">
+            <div class="tl-title">${t.label}</div>
+            <div class="tl-date">${t.date}</div>
+          </div>
+          <div class="tl-amount" style="color:${t.type==='in'?'var(--green)':t.type==='out'?'var(--red)':'var(--accent)'}">
+            ${t.type==='in'?'+':'−'}₹${t.amount.toLocaleString('en-IN')}
+          </div>
+        </div>`).join('')}
+    </div>` : '<div style="color:var(--text3);text-align:center;padding:32px">No transactions yet</div>';
+}
+
+function renderUdhaar() {
+  const el = document.getElementById('udhaar-table');
+  const statusMap = { overdue:{cls:'tag-red',label:'Overdue'}, due_soon:{cls:'tag-amber',label:'Due Soon'}, ok:{cls:'tag-green',label:'On Track'} };
+  el.innerHTML = `<table>
+    <thead><tr><th>Customer</th><th>Amount Owed</th><th>Due Date</th><th>Days</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>${UDHAAR_DATA.map(u=>{
+      const s = statusMap[u.status];
+      return `<tr>
+        <td><div style="display:flex;align-items:center;gap:10px">
+          <div style="width:32px;height:32px;border-radius:50%;background:${u.color};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff">${u.initial}</div>
+          <span style="font-weight:500;color:var(--text)">${u.name}</span>
+        </div></td>
+        <td style="font-weight:700;color:${u.status==='overdue'?'var(--red)':'var(--green)'}">₹${u.amount.toLocaleString('en-IN')}</td>
+        <td>${u.due}</td>
+        <td><span style="color:${u.days<0?'var(--red)':u.days<15?'var(--accent)':'var(--text2)'}">${u.days<0?Math.abs(u.days)+' overdue':u.days+' days left'}</span></td>
+        <td><span class="tag ${s.cls}">${s.label}</span></td>
+        <td><button class="btn btn-ghost btn-sm" onclick="showToast('Reminder sent to ${u.name}!','success')">📲 Remind</button></td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
+}
+
+function renderDirectory() {
+  const grid = document.getElementById('dir-grid');
+  grid.innerHTML = DIRECTORY_BUSINESSES.map(b=>`
+    <div class="dir-card" onclick="">
+      <div class="dir-biz-icon">${b.icon}</div>
+      <div class="dir-biz-name">${b.name}</div>
+      <div class="dir-biz-type">${b.type}</div>
+      <div class="rating">★ ${b.rating} <span style="color:var(--text3)">(${b.reviews} reviews)</span></div>
+      <div class="dir-biz-city">📍 ${b.city}</div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:8px">
+        ${b.tags.map(t=>`<span class="tag tag-blue">${t}</span>`).join('')}
+      </div>
+      <div class="dir-actions">
+        <button class="btn btn-primary btn-xs" onclick="event.stopPropagation();navigate('messages');showToast('Opening chat with ${b.name}','success')">💬 Message</button>
+        <button class="btn btn-ghost btn-xs" onclick="event.stopPropagation();showToast('${b.name} saved to referrals!','success')">🤝 Refer</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderMessages() {
+  const threads = document.getElementById('msg-threads');
+  threads.innerHTML = MESSAGES.map(m=>`
+    <div class="msg-thread ${m.active?'active':''}" onclick="switchThread(${m.id})">
+      <div class="thread-avatar" style="background:${m.color}">${m.initial}</div>
+      <div style="flex:1;min-width:0">
+        <div class="thread-name">${m.name}</div>
+        <div class="thread-preview">${m.preview}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+        <span class="thread-time">10:10</span>
+        ${m.unread?`<span style="background:var(--accent);color:#000;font-size:10px;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center">${m.unread}</span>`:''}
+      </div>
+    </div>`).join('');
+
+  const body = document.getElementById('msg-body');
+  body.innerHTML = MSG_HISTORY.map(m=>`
+    <div class="msg-bubble ${m.side}" >${m.text}
+      <div style="font-size:10px;opacity:.6;margin-top:4px;text-align:${m.side==='me'?'right':'left'}">${m.time}</div>
+    </div>`).join('');
+  body.scrollTop = body.scrollHeight;
+}
+
+function switchThread(id) {
+  MESSAGES.forEach(m=>m.active = m.id===id);
+  renderMessages();
+  const m = MESSAGES.find(x=>x.id===id);
+  document.getElementById('msg-topbar').querySelector('.thread-avatar').style.background = m.color;
+  document.getElementById('msg-topbar').querySelectorAll('div')[1].children[0].textContent = m.name;
+}
+
+function sendMessage() {
+  const input = document.getElementById('msg-input-field');
+  const txt = input.value.trim();
+  if(!txt) return;
+  const body = document.getElementById('msg-body');
+  const div = document.createElement('div');
+  div.className = 'msg-bubble me';
+  const now = new Date();
+  div.innerHTML = txt+`<div style="font-size:10px;opacity:.6;margin-top:4px;text-align:right">${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}</div>`;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+  input.value = '';
+  // Simulate reply
+  setTimeout(()=>{
+    const rep = document.createElement('div');
+    rep.className = 'msg-bubble them';
+    rep.textContent = 'Thanks! We will get back to you shortly.';
+    body.appendChild(rep);
+    body.scrollTop = body.scrollHeight;
+  }, 1200);
+}
+
+/* ═══════════════════════════════════════════════
+   MODALS
+   ═══════════════════════════════════════════════ */
+function openModal(id) {
+  document.getElementById('modal-'+id).classList.add('open');
+  if(id==='add-sale') {
+    document.getElementById('sale-date').valueAsDate = new Date();
+  }
+}
+function closeModal(id) {
+  document.getElementById('modal-'+id).classList.remove('open');
+}
+// Close on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay=>{
+  overlay.addEventListener('click',e=>{ if(e.target===overlay) overlay.classList.remove('open'); });
+});
+
+let txnType = 'in';
+function setTxnType(t) {
+  txnType = t;
+  ['in','out','udhaar'].forEach(x=>document.getElementById('txn-'+x+'-btn').classList.toggle('active',x===t));
+  document.getElementById('udhaar-extra').style.display = t==='udhaar'?'block':'none';
+}
+
+function submitSale() {
+  closeModal('add-sale');
+  showToast('Sale recorded successfully!','success');
+}
+function submitTxn() {
+  closeModal('add-txn');
+  showToast('Transaction added to ledger!','success');
+}
+function submitItem() {
+  closeModal('add-item');
+  showToast('Item added to inventory!','success');
+}
+
+/* ═══════════════════════════════════════════════
+   BUSINESS SWITCHER
+   ═══════════════════════════════════════════════ */
+let dropdownOpen = false;
+let dropEl = null;
+function toggleBizDropdown() {
+  if(dropdownOpen && dropEl) { dropEl.remove(); dropdownOpen=false; return; }
+  const sw = document.querySelector('.biz-switcher');
+  const rect = sw.getBoundingClientRect();
+  dropEl = document.createElement('div');
+  dropEl.style.cssText = `position:fixed;left:${rect.left}px;top:${rect.bottom+4}px;width:220px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);z-index:200;overflow:hidden;box-shadow:var(--shadow)`;
+  dropEl.innerHTML = BUSINESSES.map(b=>`
+    <div onclick="switchBusiness(${b.id})" style="display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;transition:background .15s;font-size:13px" onmouseover="this.style.background='var(--surface)'" onmouseout="this.style.background='transparent'">
+      <span style="font-size:18px">${b.icon}</span>
+      <div>
+        <div style="font-weight:500;color:var(--text)">${b.name}</div>
+        <div style="font-size:11px;color:var(--text3)">${BIZ_TYPES[b.type].label}</div>
+      </div>
+      ${b.id===currentBizId?'<span style="margin-left:auto;color:var(--accent)">✓</span>':''}
+    </div>`).join('');
+  document.body.appendChild(dropEl);
+  dropdownOpen = true;
+  setTimeout(()=>document.addEventListener('click', closeDrop, {once:true}), 50);
+}
+function closeDrop() { if(dropEl){ dropEl.remove(); dropEl=null; dropdownOpen=false; } }
+function switchBusiness(id) {
+  currentBizId = id;
+  closeDrop();
+  // Destroy charts so they reinitialize
+  Object.values(chartInstances).forEach(c=>c.destroy());
+  chartInstances = {};
+  renderDashboard();
+  if(currentPage==='inventory') renderInventory();
+  showToast('Switched to '+BUSINESSES.find(b=>b.id===id).name,'success');
+  setTimeout(initCharts, 80);
+}
+
+/* ═══════════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════════ */
+let toastTimer;
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.className = 'toast '+type;
+  document.getElementById('toast-icon').textContent = type==='success'?'✅':'❌';
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+/* ═══════════════════════════════════════════════
+   FILTER CHIPS
+   ═══════════════════════════════════════════════ */
+document.querySelectorAll('.filter-chip').forEach(chip=>{
+  chip.addEventListener('click',function(){
+    this.closest('.filter-row').querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+/* ═══════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════ */
+renderDashboard();
+setTimeout(initCharts, 100);
+</script>
+</body>
+</html>
