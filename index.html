@@ -15,7 +15,6 @@
       transition: background 0.2s ease, color 0.2s ease, border-color 0.2s;
     }
 
-    /* ---------- DARK THEME (Deep Charcoal + Blue Accents) ---------- */
     body.dark {
       --bg-body: #121212;
       --bg-surface: #1E1E1E;
@@ -23,16 +22,22 @@
       --bg-input: #2A2A2A;
       --border: #333333;
       --text-primary: #E5E7EB;
-      --text-secondary: #9CA3AF;
-      --accent: #3B82F6;           /* primary blue */
-      --accent-secondary: #6366F1; /* secondary indigo */
+      --text-secondary: #5d7a6f;
+      --accent: #438bff;
+      --accent-secondary: #6366F1;
       --accent-light: #60A5FA;
-      --accent-dark: #2563EB;
+      --accent-dark: #4f6fb5;
       --badge-bg: #3B82F622;
       --header-bg: #1E1E1E;
+      --chart-grid: rgba(255,255,255,0.08);
+      --chart-text: #9CA3AF;
+      --gradient-start: rgba(59,130,246,0.35);
+      --gradient-end: rgba(59,130,246,0.02);
+      --bar-hover: #60A5FA;
+      --line-secondary: #A78BFA;
+      --line-tertiary: #34D399;
     }
 
-    /* ---------- LIGHT THEME (Clean white + Dark Blue Accent) ---------- */
     body.light {
       --bg-body: #F4F7FC;
       --bg-surface: #FFFFFF;
@@ -41,12 +46,19 @@
       --border: #D1D9E8;
       --text-primary: #1F2A44;
       --text-secondary: #4A5B6E;
-      --accent: #1E40AF;           /* deep dark blue (primary) */
-      --accent-secondary: #2563EB; /* vibrant blue (secondary) */
+      --accent: #1E40AF;
+      --accent-secondary: #2563EB;
       --accent-light: #3B82F6;
       --accent-dark: #1E3A8A;
       --badge-bg: #1E40AF22;
       --header-bg: #FFFFFF;
+      --chart-grid: rgba(0,0,0,0.06);
+      --chart-text: #4A5B6E;
+      --gradient-start: rgba(30,64,175,0.25);
+      --gradient-end: rgba(30,64,175,0.02);
+      --bar-hover: #3B82F6;
+      --line-secondary: #7C3AED;
+      --line-tertiary: #059669;
     }
 
     body {
@@ -57,7 +69,6 @@
       justify-content: center;
     }
 
-    /* Auth Container */
     .auth-overlay {
       width: 100%;
       max-width: 500px;
@@ -77,10 +88,7 @@
       border-bottom: 2px solid var(--accent);
     }
 
-    .auth-header h1 {
-      font-size: 2rem;
-      margin-bottom: 6px;
-    }
+    .auth-header h1 { font-size: 2rem; margin-bottom: 6px; }
 
     .auth-tabs {
       display: flex;
@@ -111,13 +119,9 @@
       background: var(--bg-card);
     }
 
-    .auth-form.active-form {
-      display: block;
-    }
+    .auth-form.active-form { display: block; }
 
-    .input-group {
-      margin-bottom: 22px;
-    }
+    .input-group { margin-bottom: 22px; }
 
     .input-group label {
       display: block;
@@ -149,17 +153,15 @@
       transition: 0.2s;
     }
 
-    .btn-auth:hover {
-      background: var(--accent-dark);
-    }
+    .btn-auth:hover { background: var(--accent-dark); }
 
     .error-msg {
       color: #e63946;
       font-size: 0.8rem;
       text-align: center;
+      margin-top: 10px;
     }
 
-    /* MAIN APP DASHBOARD */
     .app-container {
       max-width: 1400px;
       margin: 0 auto;
@@ -181,14 +183,8 @@
       border: 1px solid var(--border);
     }
 
-    .logo h1 {
-      font-size: 1.7rem;
-      color: var(--accent);
-    }
-    .logo p {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-    }
+    .logo h1 { font-size: 1.7rem; color: var(--accent); }
+    .logo p { font-size: 0.8rem; color: var(--text-secondary); }
 
     .theme-toggle {
       background: var(--bg-input);
@@ -228,26 +224,10 @@
       cursor: pointer;
       transition: 0.2s;
     }
-    button:hover {
-      background: var(--accent-dark);
-    }
 
-    /* secondary accent usage: referral + send message button */
-    .refBtn, #sendMsgBtn {
-      background: var(--accent-secondary);
-      color: white;
-      border: none;
-    }
-    .refBtn:hover, #sendMsgBtn:hover {
-      filter: brightness(0.9);
-      background: var(--accent-secondary);
-    }
+    button:hover { background: var(--accent-dark); }
 
-    .logout-btn {
-      background: var(--accent);
-      color: white;
-      border: none;
-    }
+    .logout-btn { background: var(--accent); color: white; border: none; }
 
     .stats-grid {
       display: grid;
@@ -295,23 +275,14 @@
       color: var(--text-secondary);
     }
 
-    .tab-btn.active {
-      background: var(--accent);
-      color: white;
-    }
+    .tab-btn.active { background: var(--accent); color: white; }
 
-    .tab-pane {
-      display: none;
-      animation: fade 0.2s;
-    }
-
-    .tab-pane.active-pane {
-      display: block;
-    }
+    .tab-pane { display: none; animation: fade 0.2s; }
+    .tab-pane.active-pane { display: block; }
 
     @keyframes fade {
-      from { opacity: 0; transform: translateY(6px);}
-      to { opacity: 1; transform: translateY(0);}
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .card-panel {
@@ -329,10 +300,7 @@
       color: var(--accent);
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
+    table { width: 100%; border-collapse: collapse; }
 
     th, td {
       text-align: left;
@@ -341,9 +309,7 @@
       color: var(--text-primary);
     }
 
-    th {
-      color: var(--accent);
-    }
+    th { color: var(--accent); }
 
     .badge-credit {
       background: var(--badge-bg);
@@ -354,10 +320,7 @@
       border: 1px solid var(--accent);
     }
 
-    .badge-paid {
-      background: #2c6e2f33;
-      color: #2ecc71;
-    }
+    .badge-paid { background: #2c6e2f33; color: #2ecc71; }
 
     .form-row {
       display: flex;
@@ -375,14 +338,6 @@
       color: var(--text-primary);
     }
 
-    .directory-card {
-      background: var(--bg-card);
-      border-radius: 20px;
-      padding: 16px;
-      margin-bottom: 12px;
-      border-left: 5px solid var(--accent);
-    }
-
     .credit-summary {
       background: var(--bg-input);
       border-radius: 20px;
@@ -395,28 +350,104 @@
       color: var(--text-primary) !important;
     }
 
-    .credit-summary span, .credit-summary strong {
-      color: var(--text-primary);
+    .credit-summary span, .credit-summary strong { color: var(--text-primary); }
+
+    /* ---------- ANALYTICS STYLES ---------- */
+    .analytics-sub-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
     }
 
-    canvas {
-      max-height: 300px;
-      width: 100%;
+    .analytics-sub-tab {
+      padding: 10px 22px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background: var(--bg-input);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      transition: all 0.2s;
     }
+
+    .analytics-sub-tab.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .analytics-sub-tab:hover:not(.active) {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .chart-container {
+      position: relative;
+      width: 100%;
+      max-height: 380px;
+      margin-bottom: 20px;
+    }
+
+    .chart-container canvas {
+      max-height: 380px;
+      width: 100% !important;
+    }
+
+    .chart-view { display: none; }
+    .chart-view.active-chart { display: block; }
+
+    .analytics-summary-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .analytics-mini-card {
+      background: var(--bg-input);
+      border-radius: 18px;
+      padding: 14px 18px;
+      border: 1px solid var(--border);
+    }
+
+    .analytics-mini-card .mini-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .analytics-mini-card .mini-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .analytics-mini-card .mini-change {
+      font-size: 0.78rem;
+      margin-top: 2px;
+    }
+
+    .mini-change.up { color: #22c55e; }
+    .mini-change.down { color: #ef4444; }
+    .mini-change.neutral { color: var(--text-secondary); }
 
     @media (max-width: 680px) {
       .stats-grid { grid-template-columns: 1fr; }
       .form-row { flex-direction: column; }
       .credit-summary { flex-direction: column; }
+      .analytics-summary-row { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
-<body class="dark">
+<body class="light">
 
 <!-- LOGIN / REGISTER -->
 <div id="authContainer" class="auth-overlay">
   <div class="auth-header">
-    <h1><i class="fas fa-chart-line"></i> BizzHub</h1>
+    <h1> BizzHub</h1>
     <p>Empowering Small Business Ecosystem</p>
   </div>
   <div class="auth-tabs">
@@ -448,16 +479,15 @@
         <select id="regBizType" required>
           <option value="grocer">🥬 Grocery Store</option>
           <option value="salon">💇 Salon / Beauty</option>
-          <option value="other">🏢 Other Business</option>
         </select>
       </div>
       <div class="input-group">
         <label><i class="fas fa-envelope"></i> Email</label>
-        <input type="email" id="regEmail" required>
+        <input type="email" id="regEmail" placeholder="owner@example.com" required>
       </div>
       <div class="input-group">
         <label><i class="fas fa-lock"></i> Password</label>
-        <input type="password" id="regPassword" required>
+        <input type="password" id="regPassword" placeholder="••••••" required>
       </div>
       <button type="submit" class="btn-auth">Create Account</button>
       <div id="regError" class="error-msg"></div>
@@ -469,13 +499,12 @@
 <div id="mainApp" class="app-container">
   <div class="top-bar">
     <div class="logo">
-      <h1><i class="fas fa-chart-line"></i> BizzHub</h1>
-      <p>grow your business network</p>
+      <h1></i> BizzHub</h1>
+      <p>Grow your business network</p>
     </div>
-    <div style="display: flex; gap: 12px; align-items: center;">
+    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
       <button id="themeToggleBtn" class="theme-toggle"><i class="fas fa-moon"></i> <span>Dark</span></button>
       <div class="business-switch">
-        <label><i class="fas fa-chart-line"></i> View:</label>
         <select id="businessTypeSelect">
           <option value="grocer">🥬 Grocery</option>
           <option value="salon">💇 Salon</option>
@@ -489,15 +518,15 @@
   <div class="stats-grid" id="statsDashboard"></div>
 
   <div class="tabs">
-    <button class="tab-btn active" data-tab="ledger"><i class="fas fa-book"></i> Digital Ledger (Udhaar)</button>
-    <button class="tab-btn" data-tab="b2b"><i class="fas fa-handshake"></i> B2B Networking</button>
+    <button class="tab-btn active" data-tab="ledger"><i class="fas fa-book"></i> Dashboard </button>
     <button class="tab-btn" data-tab="analytics"><i class="fas fa-chart-line"></i> Sales Growth</button>
+    <button class="tab-btn" data-tab="about"><i class="fas fa-info-circle"></i> About Us</button>
   </div>
 
   <!-- LEDGER -->
   <div id="ledgerPane" class="tab-pane active-pane">
     <div class="card-panel">
-      <div class="section-title"><i class="fas fa-wallet"></i> Customer Ledger | Credit (Udhaar)</div>
+      <div class="section-title"><i class="fas fa-wallet"></i> Dashboard </div>
       <div class="form-row">
         <input type="text" id="custName" placeholder="Customer name" style="flex:2">
         <input type="number" id="amountVal" placeholder="Amount (₹)" style="flex:1">
@@ -512,7 +541,7 @@
       <div style="overflow-x: auto;">
         <table id="ledgerTable">
           <thead><tr><th>Customer</th><th>Type</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
-          <tbody id="ledgerBody"><tr><td colspan="5">Loading...</td></tr>
+          <tbody id="ledgerBody"><tr><td colspan="5">Loading...</td></tr></tbody>
         </table>
       </div>
       <div class="credit-summary">
@@ -523,65 +552,139 @@
     </div>
   </div>
 
-  <!-- B2B -->
-  <div id="b2bPane" class="tab-pane">
+  <!-- ANALYTICS -->
+  <div id="analyticsPane" class="tab-pane">
     <div class="card-panel">
-      <div class="section-title"><i class="fas fa-building"></i> Business Directory & Referrals</div>
-      <div id="bizDirectoryContainer"></div>
-      <hr style="border-color: var(--border); margin: 16px 0">
-      <div class="section-title"><i class="fas fa-envelope"></i> Send Message</div>
-      <div class="form-row">
-        <select id="msgReceiverSelect"><option>Select business</option></select>
-        <textarea id="msgContent" rows="2" placeholder="Collaboration / bulk buying message..." style="flex:3"></textarea>
-        <button id="sendMsgBtn">Send <i class="fas fa-paper-plane"></i></button>
+      <div class="section-title"><i class="fas fa-chart-bar"></i> Sales Growth Trends</div>
+      <div class="analytics-sub-tabs">
+        <button class="analytics-sub-tab active" data-chart="daily">📅 Daily</button>
+        <button class="analytics-sub-tab" data-chart="monthly">📆 Monthly</button>
+        <button class="analytics-sub-tab" data-chart="yearly">📈 Yearly</button>
       </div>
-      <div style="margin-top:16px; background: var(--bg-input); border-radius:20px; padding:12px;">
-        <strong><i class="fas fa-comments"></i> Recent Messages</strong>
-        <div id="messageList"></div>
+
+      <!-- Daily View -->
+      <div id="dailyView" class="chart-view active-chart">
+        <div class="chart-container"><canvas id="dailyChart"></canvas></div>
+        <div class="analytics-summary-row" id="dailySummary"></div>
+      </div>
+
+      <!-- Monthly View -->
+      <div id="monthlyView" class="chart-view">
+        <div class="chart-container"><canvas id="monthlyChart"></canvas></div>
+        <div class="analytics-summary-row" id="monthlySummary"></div>
+      </div>
+
+      <!-- Yearly View -->
+      <div id="yearlyView" class="chart-view">
+        <div class="chart-container"><canvas id="yearlyChart"></canvas></div>
+        <div class="analytics-summary-row" id="yearlySummary"></div>
       </div>
     </div>
   </div>
 
-  <!-- ANALYTICS -->
-  <div id="analyticsPane" class="tab-pane">
+  <!-- ABOUT -->
+  <div id="aboutPane" class="tab-pane">
     <div class="card-panel">
-      <div class="section-title"><i class="fas fa-chart-simple"></i> Sales Growth Trends</div>
-      <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-        <div style="flex:1;"><canvas id="monthlyChart" width="400" height="250"></canvas><p style="text-align:center; color: var(--accent);">📆 Monthly Revenue (₹)</p></div>
-        <div style="flex:1;"><canvas id="annualChart" width="400" height="250"></canvas><p style="text-align:center; color: var(--accent);">📈 Annual Comparison</p></div>
+      <div class="section-title"><i class="fas fa-info-circle"></i> About Us</div>
+      <p style="color:var(--text-primary);">BizzHub is a lightweight small-business dashboard designed to help local shops, salons and vendors track daily transactions, manage simple inventory, and visualize sales trends. It's meant for quick, offline-first use with data stored locally in your browser.</p>
+      <div style="margin-top:12px; display:flex; gap:12px; flex-wrap:wrap;">
+        <div style="flex:1; min-width:220px;">
+          <strong>Contact</strong>
+          <div style="margin-top:6px; color:var(--text-primary);">Dipesh Shelar (dipesh.shelar25@pccoepune.org)</div>
+          <div style="margin-top:6px; color:var(--text-primary);">Sanika Shinde (sanika.shinde25@pccoepune.org)</div>
+          <div style="margin-top:6px; color:var(--text-primary);">Vedika Maramvar (vedika.maramvar25@pccoepune.org)</div>
+          <div style="margin-top:6px; color:var(--text-primary);">Niyati Jadhav (niyati.jadhav25@pccoepune.org)</div>
+        </div>
+        <div style="flex:1; min-width:220px;">
+          <strong>Version</strong>
+          <div style="margin-top:6px; color:var(--text-primary);">v1.0 — Local demo</div>
+          <div style="color:var(--text-primary);">Built with ❤️ for small businesses.</div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  // ---------- AUTH SYSTEM ----------
-  let registeredUsers = JSON.parse(localStorage.getItem("bizzhub_users")) || {};
+  // ---------- AUTH & DATA ----------
+  let registeredUsers = JSON.parse(localStorage.getItem("bizzhub_users_v2")) || {};
+
+  function generateSampleLedger(bizType) {
+    const entries = [];
+    let id = 1;
+    const today = new Date();
+    const customers = bizType === "grocer"
+      ? ["Mohan","Lakshmi","Suresh","Kavita","Ramesh","Priya","Ashok","Deepa"]
+      : bizType === "salon"
+      ? ["Neha","Anita","Pooja","Meena","Divya","Sneha","Kavita","Ritu"]
+      : ["Raj","Sneha","Vikram","Amit","Sunita","Kiran","Rakesh","Nisha"];
+
+    // Generate 18 months of realistic data
+    for (let m = 17; m >= 0; m--) {
+      const monthDate = new Date(today.getFullYear(), today.getMonth() - m, 1);
+      const daysInMonth = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0).getDate();
+      // Seasonal multiplier
+      const monthIdx = monthDate.getMonth();
+      const seasonMul = [0.8, 0.85, 0.95, 1.0, 1.05, 0.9, 0.85, 0.9, 1.0, 1.15, 1.3, 1.4][monthIdx];
+      // Growth over time
+      const growthMul = 1 + (17 - m) * 0.02;
+      const baseAmount = bizType === "grocer" ? 1800 : bizType === "salon" ? 1200 : 3500;
+      const txnsPerMonth = bizType === "grocer" ? 18 : bizType === "salon" ? 12 : 8;
+
+      for (let t = 0; t < txnsPerMonth; t++) {
+        const day = Math.min(Math.floor(Math.random() * daysInMonth) + 1, daysInMonth);
+        const d = new Date(monthDate.getFullYear(), monthDate.getMonth(), day);
+        const dateStr = d.toISOString().slice(0, 10);
+        const cust = customers[Math.floor(Math.random() * customers.length)];
+        const amount = Math.round((baseAmount * seasonMul * growthMul * (0.4 + Math.random() * 1.2)) / 10) * 10;
+
+        const roll = Math.random();
+        if (roll < 0.55) {
+          entries.push({ id: id++, customer: cust, type: "received", amount, date: dateStr, creditSettled: null });
+        } else if (roll < 0.8) {
+          entries.push({ id: id++, customer: cust, type: "spent", amount: Math.round(amount * 0.5), date: dateStr, creditSettled: null });
+        } else if (roll < 0.93) {
+          entries.push({ id: id++, customer: cust, type: "credit", amount: Math.round(amount * 0.6), date: dateStr, creditSettled: m > 2 ? true : false });
+        } else {
+          entries.push({ id: id++, customer: cust, type: "creditPaid", amount: Math.round(amount * 0.4), date: dateStr, creditSettled: true });
+        }
+      }
+    }
+
+    // Add a few entries for today
+    const todayStr = today.toISOString().slice(0, 10);
+    for (let i = 0; i < 4; i++) {
+      const cust = customers[Math.floor(Math.random() * customers.length)];
+      const amt = Math.round((baseAmount(bizType) * (0.5 + Math.random())) / 10) * 10;
+      entries.push({ id: id++, customer: cust, type: i < 3 ? "received" : "spent", amount: amt, date: todayStr, creditSettled: null });
+    }
+
+    return { entries, nextId: id };
+
+    function baseAmount(bt) { return bt === "grocer" ? 1800 : bt === "salon" ? 1200 : 3500; }
+  }
+
   if (Object.keys(registeredUsers).length === 0) {
-    registeredUsers["grocer@bizzhub.com"] = { email: "grocer@bizzhub.com", password: "grocery123", bizType: "grocer", bizName: "FreshMart Grocery", ledger: [{ id: 1, customer: "Mohan", type: "received", amount: 5600, date: "2026-03-14", creditSettled: null }, { id: 2, customer: "Lakshmi", type: "credit", amount: 3400, date: "2026-03-01", creditSettled: false }, { id: 3, customer: "Supplier", type: "spent", amount: 2500, date: "2026-03-09", creditSettled: null }], nextId: 4, inventory: { rice: 200, dal: 120, oil: 45 } };
-    registeredUsers["salon@bizzhub.com"] = { email: "salon@bizzhub.com", password: "salon123", bizType: "salon", bizName: "Glamour Salon", ledger: [{ id: 1, customer: "Neha", type: "received", amount: 3200, date: "2026-03-12", creditSettled: null }, { id: 2, customer: "Kavita", type: "credit", amount: 1500, date: "2026-03-01", creditSettled: false }], nextId: 3, inventory: { hairColor: 15, shampoo: 30, scissors: 5 } };
-    registeredUsers["other@bizzhub.com"] = { email: "other@bizzhub.com", password: "other123", bizType: "other", bizName: "City Electronics", ledger: [{ id: 1, customer: "Raj", type: "received", amount: 12000, date: "2026-03-10", creditSettled: null }, { id: 2, customer: "Sneha", type: "credit", amount: 5000, date: "2026-03-05", creditSettled: false }], nextId: 3, inventory: { gadgets: 50, accessories: 120 } };
-    localStorage.setItem("bizzhub_users", JSON.stringify(registeredUsers));
+    ["grocer", "salon", "other"].forEach(bt => {
+      const email = bt + "@bizzhub.com";
+      const pwd = bt + "123";
+      const bizName = bt === "grocer" ? "FreshMart Grocery" : bt === "salon" ? "Glamour Salon" : "City Electronics";
+      const inv = bt === "grocer" ? { rice: 200, dal: 120, oil: 45 }
+               : bt === "salon" ? { hairColor: 15, shampoo: 30, scissors: 5 }
+               : { gadgets: 50, accessories: 120 };
+      const sample = generateSampleLedger(bt);
+      registeredUsers[email] = { email, password: pwd, bizType: bt, bizName, ledger: sample.entries, nextId: sample.nextId, inventory: inv };
+    });
+    localStorage.setItem("bizzhub_users_v2", JSON.stringify(registeredUsers));
   }
 
   let currentSession = null;
-  let monthlyChart, annualChart;
-  let messages = JSON.parse(localStorage.getItem("b2b_messages_bizz")) || [];
-  const b2bDirectory = [
-    { id: "b1", name: "City Auto Parts", category: "Mechanic Supplier", contact: "Ramesh", about: "Bulk tyres & engine oil - 10% off" },
-    { id: "b2", name: "StyleHub Salon Equip", category: "Salon Wholesale", contact: "Meena", about: "Shampoo, shears bulk deals" },
-    { id: "b3", name: "Grocery Mandi Bazaar", category: "Grocer Supplier", contact: "Ashok", about: "Rice, dal, spices – group orders" },
-    { id: "b4", name: "QuickFix Tools", category: "Hardware", contact: "Kiran", about: "Toolkits, mechanic bulk discount" }
-  ];
+  let dailyChartInstance, monthlyChartInstance, yearlyChartInstance;
 
   function persist() {
     if (currentSession) {
-      registeredUsers[currentSession.email] = {
-        ...currentSession,
-        password: registeredUsers[currentSession.email]?.password || "dummy"
-      };
-      localStorage.setItem("bizzhub_users", JSON.stringify(registeredUsers));
-      localStorage.setItem("b2b_messages_bizz", JSON.stringify(messages));
+      registeredUsers[currentSession.email] = { ...currentSession, password: registeredUsers[currentSession.email]?.password || "dummy" };
+      localStorage.setItem("bizzhub_users_v2", JSON.stringify(registeredUsers));
     }
   }
 
@@ -596,47 +699,123 @@
     return { received, spent, creditOwed };
   }
 
+  function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;' }[m])); }
+
   function updateDashboard() {
     if (!currentSession) return;
     const totals = computeTotals(currentSession);
-    const today = new Date().toISOString().slice(0,10);
-    const todaySales = currentSession.ledger.filter(t => (t.type === "received" || t.type === "creditPaid") && t.date === today).reduce((s,t)=>s+t.amount,0);
-    let invSummary = "";
-    if (currentSession.bizType === "grocer") invSummary = `Rice: ${currentSession.inventory.rice || 0} kg, Dal: ${currentSession.inventory.dal || 0} kg`;
-    else if (currentSession.bizType === "salon") invSummary = `Hair Color: ${currentSession.inventory.hairColor || 0}, Shampoo: ${currentSession.inventory.shampoo || 0}`;
-    else invSummary = `Stock: ${currentSession.inventory.gadgets || 0} gadgets, ${currentSession.inventory.accessories || 0} accessories`;
+    const today = new Date().toISOString().slice(0, 10);
+    const todaySales = currentSession.ledger.filter(t => (t.type === "received" || t.type === "creditPaid") && t.date === today).reduce((s, t) => s + t.amount, 0);
+
+    // Build inventory summary and an editable editor container
+    const inv = currentSession.inventory || {};
+    const invSummary = (() => {
+      if (currentSession.bizType === "grocer") return `Rice: ${inv.rice || 0} kg, Dal: ${inv.dal || 0} kg, Oil: ${inv.oil || 0}`;
+      if (currentSession.bizType === "salon") return `Hair Color: ${inv.hairColor || 0}, Shampoo: ${inv.shampoo || 0}, Scissors: ${inv.scissors || 0}`;
+      return `Stock: ${inv.gadgets || inv.genericStock || 0}, Supplies: ${inv.accessories || inv.supplies || 0}`;
+    })();
+
     document.getElementById("statsDashboard").innerHTML = `
-      <div class="stat-card"><div class="stat-title"><i class="fas fa-chart-line"></i> Today's Sales</div><div class="stat-value">₹${todaySales}</div></div>
-      <div class="stat-card"><div class="stat-title"><i class="fas fa-boxes"></i> Key Inventory</div><div class="stat-value" style="font-size:1.2rem;">${invSummary}</div></div>
-      <div class="stat-card"><div class="stat-title"><i class="fas fa-rupee-sign"></i> Net Profit</div><div class="stat-value">₹${totals.received - totals.spent}</div></div>
-      <div class="stat-card"><div class="stat-title"><i class="fas fa-hand-holding-usd"></i> Outstanding Udhaar</div><div class="stat-value">₹${totals.creditOwed}</div></div>
+      <div class="stat-card"><div class="stat-title"><i class="fas fa-chart-line"></i> Today's Sales</div><div class="stat-value">₹${todaySales.toLocaleString()}</div></div>
+      <div class="stat-card"><div class="stat-title"><i class="fas fa-boxes"></i> Key Inventory</div>
+        <div class="stat-value" style="font-size:1.0rem;">${invSummary}</div>
+        <div style="margin-top:10px;"><button id="editInvBtn" class="theme-toggle" style="padding:6px 10px; font-size:0.9rem;">✏️ Edit Inventory</button></div>
+        <div id="invEditorContainer" style="margin-top:12px; display:none;"></div>
+      </div>
+      <div class="stat-card"><div class="stat-title"><i class="fas fa-rupee-sign"></i> Net Profit</div><div class="stat-value">₹${(totals.received - totals.spent).toLocaleString()}</div></div>
+      <div class="stat-card"><div class="stat-title"><i class="fas fa-hand-holding-usd"></i> Outstanding Udhaar</div><div class="stat-value">₹${totals.creditOwed.toLocaleString()}</div></div>
     `;
+
+    // After inserting the DOM, render editor and attach handlers
+    renderInventoryEditor();
+  }
+
+  function getInventoryFieldsForType(bizType) {
+    if (bizType === 'grocer') return [
+      { key: 'rice', label: 'Rice (kg)' },
+      { key: 'dal', label: 'Dal (kg)' },
+      { key: 'oil', label: 'Oil (L)' }
+    ];
+    if (bizType === 'salon') return [
+      { key: 'hairColor', label: 'Hair Color (pcs)' },
+      { key: 'shampoo', label: 'Shampoo (bottles)' },
+      { key: 'scissors', label: 'Scissors (pcs)' }
+    ];
+    return [
+      { key: 'gadgets', label: 'Gadgets (pcs)' },
+      { key: 'accessories', label: 'Accessories (pcs)' }
+    ];
+  }
+
+  function renderInventoryEditor() {
+    const container = document.getElementById('invEditorContainer');
+    if (!container || !currentSession) return;
+    const fields = getInventoryFieldsForType(currentSession.bizType);
+    const inv = currentSession.inventory || {};
+    const formHtml = fields.map(f => {
+      const val = typeof inv[f.key] !== 'undefined' ? inv[f.key] : 0;
+      return `<div style="margin:8px 0;"><label style="display:block; font-weight:600; margin-bottom:6px;">${f.label}</label><input type="number" id="inv_${f.key}" value="${val}" style="width:100%; padding:8px; border-radius:12px; border:1px solid var(--border); background:var(--bg-input); color:var(--text-primary);" min="0"></div>`;
+    }).join('');
+    container.innerHTML = `
+      <div id="invForm" style="background:var(--bg-input); padding:12px; border-radius:12px; border:1px solid var(--border);">
+        ${formHtml}
+        <div style="display:flex; gap:8px; margin-top:8px;"><button id="saveInvBtn" class="btn-auth" style="padding:8px 12px; border-radius:12px; font-size:0.95rem;">Save</button><button id="cancelInvBtn" class="theme-toggle" style="padding:8px 12px; border-radius:12px;">Cancel</button></div>
+      </div>
+    `;
+
+    // hide form initially
+    container.style.display = 'none';
+
+    const editBtn = document.getElementById('editInvBtn');
+    if (editBtn) {
+      editBtn.addEventListener('click', () => {
+        container.style.display = container.style.display === 'none' ? 'block' : 'none';
+      });
+    }
+
+    const saveBtn = document.getElementById('saveInvBtn');
+    const cancelBtn = document.getElementById('cancelInvBtn');
+    if (cancelBtn) cancelBtn.addEventListener('click', () => { container.style.display = 'none'; });
+    if (saveBtn) saveBtn.addEventListener('click', () => updateInventoryFromForm(fields));
+  }
+
+  function updateInventoryFromForm(fields) {
+    if (!currentSession) return;
+    currentSession.inventory = currentSession.inventory || {};
+    fields.forEach(f => {
+      const el = document.getElementById('inv_' + f.key);
+      if (!el) return;
+      const v = parseFloat(el.value);
+      currentSession.inventory[f.key] = isNaN(v) ? 0 : v;
+    });
+    persist();
+    updateDashboard();
+    renderLedger();
+    rebuildAllCharts();
+    const container = document.getElementById('invEditorContainer'); if (container) container.style.display = 'none';
   }
 
   function renderLedger() {
     const tbody = document.getElementById("ledgerBody");
-    if (!currentSession.ledger.length) tbody.innerHTML = "<tr><td colspan='5'>No transactions</td></tr>";
-    else {
-      tbody.innerHTML = currentSession.ledger.slice().reverse().map(t => {
-        let typeLabel = t.type === "received" ? "💰 Received" : t.type === "spent" ? "💸 Spent" : t.type === "credit" ? "📝 Udhaar" : "✅ Credit Repaid";
-        let status = t.type === "credit" ? (t.creditSettled ? "<span class='badge-credit'>Settled</span>" : "<span class='badge-credit'>Unpaid</span>") : (t.type === "creditPaid" ? "<span class='badge-paid'>Repaid</span>" : "-");
-        return `<tr><td>${escapeHtml(t.customer)}</td><td>${typeLabel}</td><td>₹${t.amount}</td><td>${status}</td><td>${t.date}</td></tr>`;
-      }).join("");
-    }
+    if (!currentSession.ledger.length) { tbody.innerHTML = "<tr><td colspan='5'>No transactions</td></tr>"; return; }
+    tbody.innerHTML = currentSession.ledger.slice().reverse().slice(0, 50).map(t => {
+      let typeLabel = t.type === "received" ? "💰 Received" : t.type === "spent" ? "💸 Spent" : t.type === "credit" ? "📝 Udhaar" : "✅ Credit Repaid";
+      let status = t.type === "credit" ? (t.creditSettled ? "<span class='badge-credit badge-paid'>Settled</span>" : "<span class='badge-credit'>Unpaid</span>") : (t.type === "creditPaid" ? "<span class='badge-credit badge-paid'>Repaid</span>" : "-");
+      return `<tr><td>${escapeHtml(t.customer)}</td><td>${typeLabel}</td><td>₹${t.amount.toLocaleString()}</td><td>${status}</td><td>${t.date}</td></tr>`;
+    }).join("");
     const totals = computeTotals(currentSession);
-    document.getElementById("totalReceivedSum").innerText = `₹${totals.received}`;
-    document.getElementById("totalSpentSum").innerText = `₹${totals.spent}`;
-    document.getElementById("totalCreditOwed").innerText = `₹${totals.creditOwed}`;
+    document.getElementById("totalReceivedSum").innerText = `₹${totals.received.toLocaleString()}`;
+    document.getElementById("totalSpentSum").innerText = `₹${totals.spent.toLocaleString()}`;
+    document.getElementById("totalCreditOwed").innerText = `₹${totals.creditOwed.toLocaleString()}`;
   }
 
   function addTransaction() {
     const cust = document.getElementById("custName").value.trim();
     const amount = parseFloat(document.getElementById("amountVal").value);
     const txnType = document.getElementById("txnType").value;
-    if (!cust || isNaN(amount) || amount <= 0) { alert("Valid customer & amount"); return; }
-    const today = new Date().toISOString().slice(0,10);
-    let newId = currentSession.nextId++;
-    let newEntry = { id: newId, customer: cust, amount, date: today, type: txnType };
+    if (!cust || isNaN(amount) || amount <= 0) { alert("Enter valid customer & amount"); return; }
+    const today = new Date().toISOString().slice(0, 10);
+    let newEntry = { id: currentSession.nextId++, customer: cust, amount, date: today, type: txnType };
     if (txnType === "credit") newEntry.creditSettled = false;
     else if (txnType === "creditPaid") {
       const openCredit = currentSession.ledger.find(l => l.type === "credit" && l.customer === cust && !l.creditSettled);
@@ -650,137 +829,374 @@
     persist();
     renderLedger();
     updateDashboard();
-    updateCharts();
+    rebuildAllCharts();
+    document.getElementById("custName").value = "";
+    document.getElementById("amountVal").value = "";
   }
 
-  function renderDirectory() {
-    const container = document.getElementById("bizDirectoryContainer");
-    container.innerHTML = b2bDirectory.map(b => `
-      <div class="directory-card">
-        <div><strong><i class="fas fa-shop"></i> ${b.name}</strong> <span style="background:var(--badge-bg); padding:2px 10px; border-radius:20px;">${b.category}</span></div>
-        <div>📞 ${b.contact}</div>
-        <div>💡 ${b.about}</div>
-        <button class="refBtn" data-biz="${b.name}" style="margin-top:8px;">🤝 Ask Referral</button>
-      </div>
-    `).join("");
-    const select = document.getElementById("msgReceiverSelect");
-    select.innerHTML = `<option value="">-- Select business --</option>` + b2bDirectory.map(b => `<option value="${b.name}">${b.name}</option>`).join("");
-    document.querySelectorAll(".refBtn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const bizName = btn.getAttribute("data-biz");
-        document.getElementById("msgContent").value = `Hi ${bizName}, I'm ${currentSession.bizName} interested in bulk buying/referral. Let's connect!`;
-        document.getElementById("msgReceiverSelect").value = bizName;
+  // ---------- CHART HELPERS ----------
+  function getChartColors() {
+    const style = getComputedStyle(document.body);
+    return {
+      accent: style.getPropertyValue('--accent').trim(),
+      accentLight: style.getPropertyValue('--accent-light').trim(),
+      gridColor: style.getPropertyValue('--chart-grid').trim(),
+      textColor: style.getPropertyValue('--chart-text').trim(),
+      gradientStart: style.getPropertyValue('--gradient-start').trim(),
+      gradientEnd: style.getPropertyValue('--gradient-end').trim(),
+      barHover: style.getPropertyValue('--bar-hover').trim(),
+      lineSecondary: style.getPropertyValue('--line-secondary').trim(),
+      lineTertiary: style.getPropertyValue('--line-tertiary').trim(),
+    };
+  }
+
+  function createGradient(ctx, colorStart, colorEnd) {
+    const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+    gradient.addColorStop(0, colorStart);
+    gradient.addColorStop(1, colorEnd);
+    return gradient;
+  }
+
+  function pctChange(curr, prev) {
+    if (prev === 0) return curr > 0 ? { val: "+100%", cls: "up" } : { val: "—", cls: "neutral" };
+    const pct = ((curr - prev) / prev * 100).toFixed(1);
+    return { val: (pct >= 0 ? "+" : "") + pct + "%", cls: pct >= 0 ? "up" : "down" };
+  }
+
+  // ---------- DAILY CHART ----------
+  function buildDailyChart() {
+    const ctx = document.getElementById("dailyChart").getContext("2d");
+    const colors = getChartColors();
+    const today = new Date();
+    const labels = [], revenueData = [], expenseData = [];
+
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i);
+      const dateStr = d.toISOString().slice(0, 10);
+      const dayLabel = d.getDate() + " " + d.toLocaleString('default', { month: 'short' });
+      labels.push(dayLabel);
+      let rev = 0, exp = 0;
+      currentSession.ledger.forEach(t => {
+        if (t.date === dateStr) {
+          if (t.type === "received" || t.type === "creditPaid") rev += t.amount;
+          else if (t.type === "spent") exp += t.amount;
+        }
       });
-    });
-    renderMessages();
-  }
+      revenueData.push(rev);
+      expenseData.push(exp);
+    }
 
-  function renderMessages() {
-    const container = document.getElementById("messageList");
-    if (!messages.length) { container.innerHTML = "<p>No messages yet.</p>"; return; }
-    container.innerHTML = messages.slice(-5).reverse().map(m => `<div style="background:var(--bg-card); border-radius:16px; margin:6px 0; padding:8px;"><strong>${escapeHtml(m.fromBiz)} → ${escapeHtml(m.toBiz)}</strong><br/>${escapeHtml(m.content)}<div style="font-size:10px;">${m.timestamp}</div></div>`).join("");
-  }
-
-  function sendMessage() {
-    const toBiz = document.getElementById("msgReceiverSelect").value;
-    const content = document.getElementById("msgContent").value.trim();
-    if (!toBiz || !content) { alert("Select business & write message"); return; }
-    messages.push({ fromBiz: currentSession.bizName, toBiz, content, timestamp: new Date().toLocaleString() });
-    localStorage.setItem("b2b_messages_bizz", JSON.stringify(messages));
-    renderMessages();
-    document.getElementById("msgContent").value = "";
-    alert("Message sent");
-  }
-
-  function getMonthlyRevenue() {
-    const map = new Map();
-    currentSession.ledger.forEach(t => {
-      if (t.type === "received" || t.type === "creditPaid") {
-        let key = t.date.substring(0,7);
-        map.set(key, (map.get(key)||0) + t.amount);
+    if (dailyChartInstance) dailyChartInstance.destroy();
+    dailyChartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Revenue (₹)',
+            data: revenueData,
+            backgroundColor: colors.accent + 'CC',
+            hoverBackgroundColor: colors.barHover,
+            borderRadius: 6,
+            borderSkipped: false,
+          },
+          {
+            label: 'Expenses (₹)',
+            data: expenseData,
+            backgroundColor: '#ef444488',
+            hoverBackgroundColor: '#ef4444CC',
+            borderRadius: 6,
+            borderSkipped: false,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { intersect: false, mode: 'index' },
+        plugins: {
+          legend: { labels: { color: colors.textColor, font: { weight: 600 } } },
+          tooltip: {
+            backgroundColor: '#1E1E1EEE',
+            titleColor: '#fff',
+            bodyColor: '#ccc',
+            borderColor: colors.accent,
+            borderWidth: 1,
+            cornerRadius: 12,
+            callbacks: { label: ctx => ` ${ctx.dataset.label}: ₹${ctx.parsed.y.toLocaleString()}` }
+          }
+        },
+        scales: {
+          x: { ticks: { color: colors.textColor, maxRotation: 45, font: { size: 10 } }, grid: { color: colors.gridColor } },
+          y: { ticks: { color: colors.textColor, callback: v => '₹' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v) }, grid: { color: colors.gridColor } }
+        }
       }
     });
-    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    let labels = [], data = [];
+
+    // Summary
+    const todayRev = revenueData[29] || 0;
+    const yesterdayRev = revenueData[28] || 0;
+    const weekRev = revenueData.slice(23).reduce((a, b) => a + b, 0);
+    const prevWeekRev = revenueData.slice(16, 23).reduce((a, b) => a + b, 0);
+    const totalRev30 = revenueData.reduce((a, b) => a + b, 0);
+    const totalExp30 = expenseData.reduce((a, b) => a + b, 0);
+    const dayChange = pctChange(todayRev, yesterdayRev);
+    const weekChange = pctChange(weekRev, prevWeekRev);
+    document.getElementById("dailySummary").innerHTML = `
+      <div class="analytics-mini-card"><div class="mini-label">Today's Revenue</div><div class="mini-value">₹${todayRev.toLocaleString()}</div><div class="mini-change ${dayChange.cls}">vs yesterday ${dayChange.val}</div></div>
+      <div class="analytics-mini-card"><div class="mini-label">This Week</div><div class="mini-value">₹${weekRev.toLocaleString()}</div><div class="mini-change ${weekChange.cls}">vs last week ${weekChange.val}</div></div>
+      <div class="analytics-mini-card"><div class="mini-label">30-Day Revenue</div><div class="mini-value">₹${totalRev30.toLocaleString()}</div></div>
+      <div class="analytics-mini-card"><div class="mini-label">30-Day Profit</div><div class="mini-value">₹${(totalRev30 - totalExp30).toLocaleString()}</div></div>
+    `;
+  }
+
+  // ---------- MONTHLY CHART ----------
+  function buildMonthlyChart() {
+    const ctx = document.getElementById("monthlyChart").getContext("2d");
+    const colors = getChartColors();
     const today = new Date();
-    for (let i=5; i>=0; i--) {
-      let d = new Date(today.getFullYear(), today.getMonth() - i, 1);
-      labels.push(months[d.getMonth()]);
-      let key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-      data.push(map.get(key) || 0);
+    const labels = [], revenueData = [], expenseData = [], profitData = [];
+
+    for (let i = 11; i >= 0; i--) {
+      const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+      const key = d.toISOString().slice(0, 7);
+      const label = d.toLocaleString('default', { month: 'short' }) + " '" + String(d.getFullYear()).slice(2);
+      labels.push(label);
+      let rev = 0, exp = 0;
+      currentSession.ledger.forEach(t => {
+        if (t.date.startsWith(key)) {
+          if (t.type === "received" || t.type === "creditPaid") rev += t.amount;
+          else if (t.type === "spent") exp += t.amount;
+        }
+      });
+      revenueData.push(rev);
+      expenseData.push(exp);
+      profitData.push(rev - exp);
     }
-    return { labels, data };
-  }
 
-  function getAnnualRevenue() {
-    const annual = new Map();
-    currentSession.ledger.forEach(t => {
-      if (t.type === "received" || t.type === "creditPaid") annual.set(t.date.substring(0,4), (annual.get(t.date.substring(0,4))||0) + t.amount);
+    const gradient = createGradient(ctx, colors.gradientStart, colors.gradientEnd);
+
+    if (monthlyChartInstance) monthlyChartInstance.destroy();
+    monthlyChartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Revenue (₹)',
+            data: revenueData,
+            borderColor: colors.accent,
+            backgroundColor: gradient,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 5,
+            pointHoverRadius: 8,
+            pointBackgroundColor: colors.accent,
+            borderWidth: 3,
+          },
+          {
+            label: 'Expenses (₹)',
+            data: expenseData,
+            borderColor: '#ef4444',
+            backgroundColor: 'transparent',
+            fill: false,
+            tension: 0.4,
+            pointRadius: 4,
+            pointHoverRadius: 7,
+            pointBackgroundColor: '#ef4444',
+            borderWidth: 2,
+            borderDash: [6, 3],
+          },
+          {
+            label: 'Profit (₹)',
+            data: profitData,
+            borderColor: colors.lineTertiary,
+            backgroundColor: 'transparent',
+            fill: false,
+            tension: 0.4,
+            pointRadius: 4,
+            pointHoverRadius: 7,
+            pointBackgroundColor: colors.lineTertiary,
+            borderWidth: 2,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { intersect: false, mode: 'index' },
+        plugins: {
+          legend: { labels: { color: colors.textColor, font: { weight: 600 } } },
+          tooltip: {
+            backgroundColor: '#1E1E1EEE',
+            titleColor: '#fff',
+            bodyColor: '#ccc',
+            borderColor: colors.accent,
+            borderWidth: 1,
+            cornerRadius: 12,
+            callbacks: { label: ctx => ` ${ctx.dataset.label}: ₹${ctx.parsed.y.toLocaleString()}` }
+          }
+        },
+        scales: {
+          x: { ticks: { color: colors.textColor, font: { size: 11 } }, grid: { color: colors.gridColor } },
+          y: { ticks: { color: colors.textColor, callback: v => '₹' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v) }, grid: { color: colors.gridColor } }
+        }
+      }
     });
-    const year = new Date().getFullYear();
-    const years = [year-2, year-1, year];
-    return { labels: years, data: years.map(y => annual.get(String(y)) || 0) };
+
+    // Summary
+    const thisMonth = revenueData[11];
+    const lastMonth = revenueData[10];
+    const avgMonthly = Math.round(revenueData.reduce((a, b) => a + b, 0) / 12);
+    const bestMonth = Math.max(...revenueData);
+    const bestIdx = revenueData.indexOf(bestMonth);
+    const change = pctChange(thisMonth, lastMonth);
+    document.getElementById("monthlySummary").innerHTML = `
+      <div class="analytics-mini-card"><div class="mini-label">This Month</div><div class="mini-value">₹${thisMonth.toLocaleString()}</div><div class="mini-change ${change.cls}">vs last month ${change.val}</div></div>
+      <div class="analytics-mini-card"><div class="mini-label">Avg Monthly</div><div class="mini-value">₹${avgMonthly.toLocaleString()}</div></div>
+      <div class="analytics-mini-card"><div class="mini-label">Best Month</div><div class="mini-value">₹${bestMonth.toLocaleString()}</div><div class="mini-change neutral">${labels[bestIdx]}</div></div>
+      <div class="analytics-mini-card"><div class="mini-label">12-Month Total</div><div class="mini-value">₹${revenueData.reduce((a,b)=>a+b,0).toLocaleString()}</div></div>
+    `;
   }
 
-  function updateCharts() {
-    if (!monthlyChart) return;
-    const monthly = getMonthlyRevenue();
-    const annual = getAnnualRevenue();
-    monthlyChart.data.labels = monthly.labels;
-    monthlyChart.data.datasets[0].data = monthly.data;
-    monthlyChart.update();
-    annualChart.data.labels = annual.labels;
-    annualChart.data.datasets[0].data = annual.data;
-    annualChart.update();
+  // ---------- YEARLY CHART ----------
+  function buildYearlyChart() {
+    const ctx = document.getElementById("yearlyChart").getContext("2d");
+    const colors = getChartColors();
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const years = [];
+    for (let y = currentYear - 4; y <= currentYear; y++) years.push(y);
+
+    const revenueData = [], expenseData = [], profitData = [];
+    years.forEach(yr => {
+      let rev = 0, exp = 0;
+      currentSession.ledger.forEach(t => {
+        if (t.date.startsWith(String(yr))) {
+          if (t.type === "received" || t.type === "creditPaid") rev += t.amount;
+          else if (t.type === "spent") exp += t.amount;
+        }
+      });
+      revenueData.push(rev);
+      expenseData.push(exp);
+      profitData.push(rev - exp);
+    });
+
+    if (yearlyChartInstance) yearlyChartInstance.destroy();
+    yearlyChartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: years.map(String),
+        datasets: [
+          {
+            label: 'Revenue (₹)',
+            data: revenueData,
+            backgroundColor: colors.accent + 'CC',
+            hoverBackgroundColor: colors.barHover,
+            borderRadius: 8,
+            borderSkipped: false,
+          },
+          {
+            label: 'Expenses (₹)',
+            data: expenseData,
+            backgroundColor: '#ef444488',
+            hoverBackgroundColor: '#ef4444CC',
+            borderRadius: 8,
+            borderSkipped: false,
+          },
+          {
+            label: 'Profit (₹)',
+            data: profitData,
+            backgroundColor: colors.lineTertiary + '88',
+            hoverBackgroundColor: colors.lineTertiary + 'CC',
+            borderRadius: 8,
+            borderSkipped: false,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { intersect: false, mode: 'index' },
+        plugins: {
+          legend: { labels: { color: colors.textColor, font: { weight: 600 } } },
+          tooltip: {
+            backgroundColor: '#1E1E1EEE',
+            titleColor: '#fff',
+            bodyColor: '#ccc',
+            borderColor: colors.accent,
+            borderWidth: 1,
+            cornerRadius: 12,
+            callbacks: { label: ctx => ` ${ctx.dataset.label}: ₹${ctx.parsed.y.toLocaleString()}` }
+          }
+        },
+        scales: {
+          x: { ticks: { color: colors.textColor, font: { size: 13, weight: 700 } }, grid: { color: colors.gridColor } },
+          y: { ticks: { color: colors.textColor, callback: v => '₹' + (v >= 100000 ? (v/100000).toFixed(1) + 'L' : v >= 1000 ? (v/1000).toFixed(0) + 'k' : v) }, grid: { color: colors.gridColor } }
+        }
+      }
+    });
+
+    // Summary
+    const thisYear = revenueData[revenueData.length - 1];
+    const lastYear = revenueData[revenueData.length - 2] || 0;
+    const totalAll = revenueData.reduce((a, b) => a + b, 0);
+    const totalProfit = profitData.reduce((a, b) => a + b, 0);
+    const change = pctChange(thisYear, lastYear);
+    document.getElementById("yearlySummary").innerHTML = `
+      <div class="analytics-mini-card"><div class="mini-label">This Year (${currentYear})</div><div class="mini-value">₹${thisYear.toLocaleString()}</div><div class="mini-change ${change.cls}">vs ${currentYear-1} ${change.val}</div></div>
+      <div class="analytics-mini-card"><div class="mini-label">Last Year (${currentYear-1})</div><div class="mini-value">₹${lastYear.toLocaleString()}</div></div>
+      <div class="analytics-mini-card"><div class="mini-label">All-Time Revenue</div><div class="mini-value">₹${totalAll.toLocaleString()}</div></div>
+      <div class="analytics-mini-card"><div class="mini-label">All-Time Profit</div><div class="mini-value">₹${totalProfit.toLocaleString()}</div></div>
+    `;
   }
 
-  function initCharts() {
-    const ctxM = document.getElementById('monthlyChart').getContext('2d');
-    const ctxA = document.getElementById('annualChart').getContext('2d');
-    monthlyChart = new Chart(ctxM, { type: 'bar', data: { labels: [], datasets: [{ label: 'Revenue (₹)', backgroundColor: getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#3B82F6', borderRadius: 8, data: [] }] } });
-    annualChart = new Chart(ctxA, { type: 'line', data: { labels: [], datasets: [{ label: 'Annual Revenue (₹)', borderColor: getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#3B82F6', fill: true, tension: 0.3, data: [] }] } });
-    updateCharts();
+  function rebuildAllCharts() {
+    buildDailyChart();
+    buildMonthlyChart();
+    buildYearlyChart();
   }
 
-  function loadDashboard(session) {
-    currentSession = session;
-    document.getElementById("authContainer").style.display = "none";
-    document.getElementById("mainApp").style.display = "block";
-    document.getElementById("businessTypeSelect").value = currentSession.bizType;
-    updateDashboard();
-    renderLedger();
-    renderDirectory();
-    initCharts();
-  }
+  // ---------- TABS ----------
+  document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active-pane"));
+      document.getElementById(btn.getAttribute("data-tab") + "Pane").classList.add("active-pane");
+      if (btn.getAttribute("data-tab") === "analytics") rebuildAllCharts();
+    });
+  });
 
-  // THEME TOGGLE (Dark mode: blue accents, Light mode: dark blue)
+  document.querySelectorAll(".analytics-sub-tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".analytics-sub-tab").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      document.querySelectorAll(".chart-view").forEach(v => v.classList.remove("active-chart"));
+      document.getElementById(btn.getAttribute("data-chart") + "View").classList.add("active-chart");
+    });
+  });
+
+  // ---------- THEME ----------
   const themeToggleBtn = document.getElementById("themeToggleBtn");
   function setTheme(theme) {
-    const body = document.body;
     if (theme === 'light') {
-      body.classList.remove('dark');
-      body.classList.add('light');
+      document.body.classList.remove('dark');
+      document.body.classList.add('light');
       themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i> <span>Light</span>';
     } else {
-      body.classList.remove('light');
-      body.classList.add('dark');
+      document.body.classList.remove('light');
+      document.body.classList.add('dark');
       themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i> <span>Dark</span>';
     }
-    if (monthlyChart && annualChart) {
-      const accentColor = getComputedStyle(body).getPropertyValue('--accent').trim();
-      monthlyChart.data.datasets[0].backgroundColor = accentColor;
-      annualChart.data.datasets[0].borderColor = accentColor;
-      monthlyChart.update();
-      annualChart.update();
-    }
+    if (currentSession) setTimeout(rebuildAllCharts, 100);
   }
   themeToggleBtn.addEventListener("click", () => {
-    if (document.body.classList.contains('dark')) setTheme('light');
-    else setTheme('dark');
+    setTheme(document.body.classList.contains('dark') ? 'light' : 'dark');
   });
   setTheme('dark');
 
-  // AUTH EVENT LISTENERS
+  // ---------- AUTH ----------
   document.querySelectorAll(".auth-tab").forEach(tab => {
     tab.addEventListener("click", () => {
       document.querySelectorAll(".auth-tab").forEach(t => t.classList.remove("active"));
@@ -790,19 +1206,16 @@
     });
   });
 
-  document.getElementById("loginFormElement").addEventListener("submit", (e) => {
+  document.getElementById("loginFormElement").addEventListener("submit", e => {
     e.preventDefault();
     const email = document.getElementById("loginEmail").value.trim();
     const pwd = document.getElementById("loginPassword").value;
     const user = registeredUsers[email];
-    if (user && user.password === pwd) {
-      loadDashboard(JSON.parse(JSON.stringify(user)));
-    } else {
-      document.getElementById("loginError").innerText = "Invalid credentials. Try grocer@bizzhub.com / grocery123";
-    }
+    if (user && user.password === pwd) loadDashboard(JSON.parse(JSON.stringify(user)));
+    else document.getElementById("loginError").innerText = "Invalid credentials. Try grocer@bizzhub.com / grocery123";
   });
 
-  document.getElementById("registerFormElement").addEventListener("submit", (e) => {
+  document.getElementById("registerFormElement").addEventListener("submit", e => {
     e.preventDefault();
     const bizName = document.getElementById("regBizName").value.trim();
     const bizType = document.getElementById("regBizType").value;
@@ -810,23 +1223,37 @@
     const pwd = document.getElementById("regPassword").value;
     if (registeredUsers[email]) { document.getElementById("regError").innerText = "Email exists!"; return; }
     let inventory = bizType === "grocer" ? { rice: 100, dal: 80, oil: 30 } : (bizType === "salon" ? { hairColor: 10, shampoo: 20, scissors: 3 } : { genericStock: 50, supplies: 25 });
-    const newUser = { email, password: pwd, bizType, bizName, ledger: [], nextId: 1, inventory };
-    registeredUsers[email] = newUser;
-    localStorage.setItem("bizzhub_users", JSON.stringify(registeredUsers));
+    registeredUsers[email] = { email, password: pwd, bizType, bizName, ledger: [], nextId: 1, inventory };
+    localStorage.setItem("bizzhub_users_v2", JSON.stringify(registeredUsers));
     alert("Registered! Please login.");
     document.querySelector(".auth-tab[data-auth='login']").click();
     document.getElementById("loginEmail").value = email;
     document.getElementById("loginPassword").value = pwd;
   });
 
+  function loadDashboard(session) {
+    currentSession = session;
+    document.getElementById("authContainer").style.display = "none";
+    document.getElementById("mainApp").style.display = "block";
+    document.getElementById("businessTypeSelect").value = currentSession.bizType;
+    updateDashboard();
+    renderLedger();
+    rebuildAllCharts();
+  }
+
   document.getElementById("logoutMainBtn").addEventListener("click", () => {
     currentSession = null;
+    if (dailyChartInstance) dailyChartInstance.destroy();
+    if (monthlyChartInstance) monthlyChartInstance.destroy();
+    if (yearlyChartInstance) yearlyChartInstance.destroy();
+    dailyChartInstance = monthlyChartInstance = yearlyChartInstance = null;
     document.getElementById("mainApp").style.display = "none";
     document.getElementById("authContainer").style.display = "block";
   });
+
   document.getElementById("addTransactionBtn").addEventListener("click", addTransaction);
-  document.getElementById("sendMsgBtn").addEventListener("click", sendMessage);
-  document.getElementById("businessTypeSelect").addEventListener("change", (e) => {
+
+  document.getElementById("businessTypeSelect").addEventListener("change", e => {
     if (currentSession) {
       currentSession.bizType = e.target.value;
       if (currentSession.bizType === "grocer" && !currentSession.inventory.rice) currentSession.inventory = { rice: 100, dal: 80, oil: 30 };
@@ -836,7 +1263,6 @@
       updateDashboard();
     }
   });
-  function escapeHtml(str) { return String(str).replace(/[&<>]/g, function(m) { return { '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m]; }); }
 </script>
 </body>
 </html>
